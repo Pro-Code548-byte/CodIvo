@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bg: #ffffff;
+  --color-surface: #f7f9fc;
+  --color-surface-2: #e5e7eb;
+  --color-ink: #575e75;
+  --color-muted: #8b92a8;
+  --color-primary: #ff8c1a;
+  --color-primary-hover: #ff661a;
+  --color-accent: #4d97ff;
+  --color-accent-hover: #3373cc;
+  --color-danger: #ff6680;
+  --color-success: #59c059;
+  --color-warning: #ffbf00;
+
+  --font-sans:
+    "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --animate-fade-in: fade-in 0.25s ease;
+  --animate-gradient-pan: gradient-pan 6s linear infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes gradient-pan {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: 200% 50%;
+    }
+  }
+}
+
+@layer base {
+  body {
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+  }
+}
+
+.dark {
+  --color-bg: #17102e;
+  --color-surface: #241a45;
+  --color-surface-2: #352a5e;
+  --color-ink: #ece7ff;
+  --color-muted: #a99fd0;
+  color-scheme: dark;
+}
