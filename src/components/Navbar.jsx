@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { signOut } from 'firebase/auth'
+import { auth } from '../firebase.js'
+import { useAuth } from '../context/authContext.js'
 
 const navItems = [
   { to: '/', label: 'Home' },
@@ -7,18 +10,22 @@ const navItems = [
   { to: '/duel', label: 'Duel' },
   { to: '/race', label: 'Race the Bot' },
   { to: '/help', label: 'Help' },
-  { to: '/login', label: 'Login' },
-  { to: '/signup', label: 'Sign Up' },
 ]
 
 const linkBase =
   'block rounded-lg px-3.5 py-2 text-sm font-semibold no-underline transition-colors duration-150'
 
 export default function Navbar() {
+  const { user } = useAuth()
   const [dark, setDark] = useState(() =>
     typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),
   )
   const [open, setOpen] = useState(false)
+
+  const handleLogout = async () => {
+    await signOut(auth)
+    setOpen(false)
+  }
 
   const toggleTheme = () => {
     const next = !dark
@@ -45,17 +52,60 @@ export default function Navbar() {
               className={({ isActive }) =>
                 isActive
                   ? `${linkBase} bg-primary text-white`
-                  : item.to === '/signup'
-                    ? `${linkBase} bg-accent text-white enabled:hover:bg-accent-hover`
-                    : `${linkBase} text-muted hover:bg-surface-2 hover:text-ink`
+                  : `${linkBase} text-muted hover:bg-surface-2 hover:text-ink`
               }
             >
               {item.label}
             </NavLink>
           </li>
         ))}
+        {user ? (
+          <li>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className={`${linkBase} w-full text-muted hover:bg-surface-2 hover:text-ink`}
+            >
+              Log Out
+            </button>
+          </li>
+        ) : (
+          <>
+            <li>
+              <NavLink
+                to="/login"
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? `${linkBase} bg-primary text-white`
+                    : `${linkBase} text-muted hover:bg-surface-2 hover:text-ink`
+                }
+              >
+                Login
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/signup"
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? `${linkBase} bg-primary text-white`
+                    : `${linkBase} bg-accent text-white enabled:hover:bg-accent-hover`
+                }
+              >
+                Sign Up
+              </NavLink>
+            </li>
+          </>
+        )}
       </ul>
       <div className="flex items-center gap-1">
+        {user && (
+          <span className="hidden text-sm font-semibold text-muted sm:block">
+            Hi, {user.displayName ?? user.email}
+          </span>
+        )}
         <button
           type="button"
           onClick={toggleTheme}

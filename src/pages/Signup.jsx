@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { auth, authErrorMessage } from '../firebase.js'
+import { useAuth } from '../context/authContext.js'
 import { btnPrimary } from '../components/buttonClasses.js'
 import { headingGradient } from '../components/headingClasses.js'
 
@@ -7,15 +10,29 @@ const inputClasses =
   'rounded-[10px] border border-surface-2 bg-bg px-3.5 py-2.5 text-base text-ink focus:border-transparent focus:outline-2 focus:outline-primary'
 
 export default function Signup() {
+  const { user } = useAuth()
+  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setMessage('Signup is not wired to a backend yet — check back soon!')
+    setError('')
+    setSubmitting(true)
+    try {
+      const { user: created } = await createUserWithEmailAndPassword(auth, email, password)
+      await updateProfile(created, { displayName: name.trim() })
+      navigate('/')
+    } catch (err) {
+      setError(authErrorMessage(err.code))
+      setSubmitting(false)
+    }
   }
+
+  if (user) return <Navigate to="/" replace />
 
   return (
     <section className="flex animate-fade-in justify-center">
@@ -54,14 +71,15 @@ export default function Signup() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={6}
               placeholder="Choose a password"
             />
           </label>
-          <button type="submit" className={`${btnPrimary} w-full`}>
-            Sign Up
+          <button type="submit" disabled={submitting} className={`${btnPrimary} w-full`}>
+            {submitting ? 'Creating account…' : 'Sign Up'}
           </button>
         </form>
-        {message && <p className="mt-4 text-lg font-bold">{message}</p>}
+        {error && <p className="mt-4 text-lg font-bold text-danger">{error}</p>}
         <p className="mt-5 text-center text-muted">
           Already have an account?{' '}
           <Link to="/login" className="no-underline text-accent hover:underline">

@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth, authErrorMessage } from '../firebase.js'
+import { useAuth } from '../context/authContext.js'
 import { btnPrimary } from '../components/buttonClasses.js'
 import { headingGradient } from '../components/headingClasses.js'
 
@@ -7,14 +10,30 @@ const inputClasses =
   'rounded-[10px] border border-surface-2 bg-bg px-3.5 py-2.5 text-base text-ink focus:border-transparent focus:outline-2 focus:outline-primary'
 
 export default function Login() {
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = (e) => {
+  const from = location.state?.from?.pathname ?? '/'
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setMessage('Login is not wired to a backend yet — check back soon!')
+    setError('')
+    setSubmitting(true)
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+      navigate(from, { replace: true })
+    } catch (err) {
+      setError(authErrorMessage(err.code))
+      setSubmitting(false)
+    }
   }
+
+  if (user) return <Navigate to="/" replace />
 
   return (
     <section className="flex animate-fade-in justify-center">
@@ -45,11 +64,11 @@ export default function Login() {
               placeholder="Your password"
             />
           </label>
-          <button type="submit" className={`${btnPrimary} w-full`}>
-            Log In
+          <button type="submit" disabled={submitting} className={`${btnPrimary} w-full`}>
+            {submitting ? 'Logging in…' : 'Log In'}
           </button>
         </form>
-        {message && <p className="mt-4 text-lg font-bold">{message}</p>}
+        {error && <p className="mt-4 text-lg font-bold text-danger">{error}</p>}
         <p className="mt-5 text-center text-muted">
           New here?{' '}
           <Link to="/signup" className="no-underline text-accent hover:underline">
