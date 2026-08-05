@@ -6,6 +6,10 @@ export const languages = [
     tagline: 'The skeleton of every webpage',
     description:
       'HTML gives structure to everything on the web. Learn to mark up text, media, and forms with semantic tags that browsers and assistive technology understand.',
+    about:
+      "HTML isn't really a programming language — it's a markup language. Instead of logic and calculations, it describes the structure and meaning of your content: this is a heading, that's a link, here's a form. Every single webpage you've ever visited is built on HTML underneath.",
+    history:
+      'HTML was invented in 1991 by Tim Berners-Lee while working at CERN, as part of the first-ever web browser. Early versions were plain and rarely standardised, until HTML 2.0 (1995) and HTML 4 (1997) gave the web a solid foundation. The modern HTML5 version arrived in 2014, adding audio, video, and rich semantics — the version you use today.',
     outline: [
       {
         title: 'Getting Started',
@@ -83,6 +87,10 @@ export const languages = [
     tagline: 'The skin and layout of the web',
     description:
       'CSS controls color, spacing, and layout. Learn the box model, Flexbox, Grid, and responsive techniques that make pages beautiful on every screen.',
+    about:
+      'CSS (Cascading Style Sheets) is the language that decides how the web looks. While HTML lays out the bones of a page, CSS paints it: colors, fonts, spacing, animations, and layouts. It cascades, which means rules combine and override each other — and that single idea unlocks everything else.',
+    history:
+      'CSS was proposed in 1994 by Håkon Wium Lie while working at CERN, partly because HTML was being stretched to handle layout. CSS1 was released in 1996, CSS2 in 1998, and then the spec was broken into modular pieces. The modern era — Flexbox, Grid, variables, and responsive design — landed in the 2010s and made CSS a real layout tool instead of a hacky one.',
     outline: [
       {
         title: 'Getting Started',

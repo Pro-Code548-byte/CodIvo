@@ -7,7 +7,7 @@ import { btnPrimary } from '../components/buttonClasses.js'
 import { headingGradient } from '../components/headingClasses.js'
 
 const inputClasses =
-  'rounded-[10px] border border-surface-2 bg-bg px-3.5 py-2.5 text-base text-ink focus:border-transparent focus:outline-2 focus:outline-primary'
+  'rounded-[10px] border-2 border-surface-2 bg-bg px-3.5 py-2.5 text-base font-medium text-ink transition-all duration-150 shadow-[0_2px_0_0_var(--color-surface-2)] focus:border-primary focus:outline-none focus:shadow-[0_3px_0_0_var(--color-primary)]'
 
 export default function Signup() {
   const { user } = useAuth()
@@ -36,8 +36,8 @@ export default function Signup() {
 
   return (
     <section className="flex animate-fade-in justify-center">
-      <div className="w-full max-w-[400px] rounded-[10px] border border-surface-2 bg-surface p-6 shadow-sm sm:p-8">
-        <h1 className={`mb-2 text-center text-[clamp(1.9rem,6vw,2.2rem)] font-bold ${headingGradient}`}>
+      <div className="w-full max-w-[400px] rounded-[14px] border-2 border-surface-2 bg-surface p-6 shadow-[0_5px_0_0_var(--color-surface-2)] sm:p-8">
+        <h1 className={`mb-2 text-center text-[clamp(1.9rem,6vw,2.2rem)] font-extrabold ${headingGradient}`}>
           Create Account
         </h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>

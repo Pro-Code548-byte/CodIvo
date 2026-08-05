@@ -13,7 +13,7 @@ const navItems = [
 ]
 
 const linkBase =
-  'block rounded-lg px-3.5 py-2 text-sm font-semibold no-underline transition-colors duration-150'
+  'block rounded-full border-2 px-4 py-1.5 text-sm font-extrabold no-underline transition-all duration-100 active:translate-y-0.5 active:shadow-none'
 
 export default function Navbar() {
   const { user } = useAuth()
@@ -35,14 +35,32 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="relative sticky top-0 z-10 flex flex-wrap items-center justify-between gap-3 border-b border-surface-2 bg-bg px-4 py-4 sm:px-6">
-      <NavLink to="/" className="text-[1.4rem] font-extrabold tracking-wide no-underline">
-        <span className="text-primary">Cod</span> <span className="text-accent">Ivo</span>
+    <nav className="relative sticky top-0 z-50 flex flex-wrap items-center justify-between gap-3 border-b-2 border-surface-2 bg-bg px-4 py-4 sm:px-6">
+      <NavLink
+        to="/"
+        className="group flex items-center gap-2.5 text-[1.4rem] font-extrabold tracking-wide no-underline hover:animate-wiggle"
+      >
+        <span className="flex size-9 items-center justify-center rounded-[10px] border-2 border-primary-hover bg-primary shadow-[0_3px_0_0_var(--color-primary-hover)] transition-transform duration-150 group-hover:rotate-12">
+          <svg
+            className="size-5 text-white"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M18.4 5.6l-2.1 2.1m-8.6 8.6-2.1 2.1" />
+          </svg>
+        </span>
+        <span>
+          <span className="text-primary">Cod</span> <span className="text-accent">Ivo</span>
+        </span>
       </NavLink>
       <ul
         className={`${
           open ? 'max-sm:flex' : 'max-sm:hidden'
-        } m-0 flex flex-wrap list-none gap-1 p-0 max-sm:absolute max-sm:inset-x-4 max-sm:top-full max-sm:z-10 max-sm:mt-2 max-sm:flex-col max-sm:gap-0.5 max-sm:rounded-[10px] max-sm:border max-sm:border-surface-2 max-sm:bg-bg max-sm:p-2 max-sm:shadow-lg`}
+        } m-0 flex flex-wrap list-none gap-1 p-0 max-sm:absolute max-sm:inset-x-4 max-sm:top-full max-sm:z-10 max-sm:mt-2 max-sm:flex-col max-sm:gap-1 max-sm:rounded-[14px] max-sm:border-2 max-sm:border-surface-2 max-sm:bg-bg max-sm:p-2 max-sm:shadow-[0_4px_0_0_var(--color-surface-2)]`}
       >
         {navItems.map((item) => (
           <li key={item.to}>
@@ -51,8 +69,8 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 isActive
-                  ? `${linkBase} bg-primary text-white`
-                  : `${linkBase} text-muted hover:bg-surface-2 hover:text-ink`
+                  ? `${linkBase} border-primary-hover bg-primary text-white shadow-[0_3px_0_0_var(--color-primary-hover)]`
+                  : `${linkBase} border-surface-2 bg-bg text-muted shadow-[0_3px_0_0_var(--color-surface-2)] hover:-translate-y-0.5 hover:border-primary hover:text-ink`
               }
             >
               {item.label}
@@ -64,7 +82,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleLogout}
-              className={`${linkBase} w-full text-muted hover:bg-surface-2 hover:text-ink`}
+              className={`${linkBase} w-full border-surface-2 bg-bg text-muted shadow-[0_3px_0_0_var(--color-surface-2)] hover:-translate-y-0.5 hover:border-danger hover:text-danger`}
             >
               Log Out
             </button>
@@ -77,8 +95,8 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
                   isActive
-                    ? `${linkBase} bg-primary text-white`
-                    : `${linkBase} text-muted hover:bg-surface-2 hover:text-ink`
+                    ? `${linkBase} border-primary-hover bg-primary text-white shadow-[0_3px_0_0_var(--color-primary-hover)]`
+                    : `${linkBase} border-surface-2 bg-bg text-muted shadow-[0_3px_0_0_var(--color-surface-2)] hover:-translate-y-0.5 hover:border-primary hover:text-ink`
                 }
               >
                 Login
@@ -88,11 +106,7 @@ export default function Navbar() {
               <NavLink
                 to="/signup"
                 onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  isActive
-                    ? `${linkBase} bg-primary text-white`
-                    : `${linkBase} bg-accent text-white enabled:hover:bg-accent-hover`
-                }
+                className={`${linkBase} border-accent-hover bg-accent text-white shadow-[0_3px_0_0_var(--color-accent-hover)] enabled:hover:-translate-y-0.5 enabled:hover:brightness-110`}
               >
                 Sign Up
               </NavLink>
@@ -102,7 +116,7 @@ export default function Navbar() {
       </ul>
       <div className="flex items-center gap-1">
         {user && (
-          <span className="hidden text-sm font-semibold text-muted sm:block">
+          <span className="hidden rounded-full border-2 border-surface-2 bg-surface px-3.5 py-1 text-sm font-bold text-muted sm:block">
             Hi, {user.displayName ?? user.email}
           </span>
         )}
@@ -110,7 +124,7 @@ export default function Navbar() {
           type="button"
           onClick={toggleTheme}
           aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-          className="rounded-lg p-2 text-muted transition-colors duration-150 hover:bg-surface-2 hover:text-ink"
+          className="rounded-[10px] border-2 border-surface-2 p-2 text-muted shadow-[0_3px_0_0_var(--color-surface-2)] transition-all duration-100 active:translate-y-0.5 active:shadow-none hover:-translate-y-0.5 hover:border-primary hover:text-ink"
         >
           {dark ? (
             <svg
@@ -144,7 +158,7 @@ export default function Navbar() {
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
-          className="hidden rounded-lg p-2 text-muted transition-colors duration-150 hover:bg-surface-2 hover:text-ink max-sm:block"
+          className="hidden rounded-[10px] border-2 border-surface-2 p-2 text-muted shadow-[0_3px_0_0_var(--color-surface-2)] transition-all duration-100 active:translate-y-0.5 active:shadow-none hover:-translate-y-0.5 hover:border-primary hover:text-ink max-sm:block"
         >
           {open ? (
             <svg

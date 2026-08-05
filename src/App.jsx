@@ -27,7 +27,18 @@ export default function App() {
       <ProgressProvider>
         <BrowserRouter>
         <Navbar />
-        <main className="mx-auto max-w-[960px] px-4 pb-16 pt-8 sm:px-6">
+        <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+          <div className="animate-aurora absolute -left-24 -top-24 size-96 rounded-full bg-primary/25 blur-3xl" />
+          <div
+            className="animate-aurora absolute -right-24 top-1/3 size-96 rounded-full bg-accent/25 blur-3xl"
+            style={{ animationDelay: '-6s' }}
+          />
+          <div
+            className="animate-aurora absolute bottom-0 left-1/4 size-80 rounded-full bg-[#855cd6]/20 blur-3xl"
+            style={{ animationDelay: '-12s' }}
+          />
+        </div>
+        <main className="relative z-10 mx-auto max-w-[960px] px-4 pb-16 pt-8 sm:px-6">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
