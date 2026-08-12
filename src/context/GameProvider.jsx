@@ -49,12 +49,19 @@ export function GameProvider({ children }) {
     const value = email.trim().toLowerCase()
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please type a real email address.'
     if (password.length < 6) return 'Password needs at least 6 characters.'
-    setState((s) => ({
-      ...s,
-      account: { email: value, password },
-      profile: s.profile ?? makeProfile(value.split('@')[0], value),
-    }))
-    return null
+    let error = null
+    setState((s) => {
+      if (s.account) {
+        error = 'That email already has an account. Please log in instead.'
+        return s
+      }
+      return {
+        ...s,
+        account: { email: value, password },
+        profile: s.profile ?? makeProfile(value.split('@')[0], value),
+      }
+    })
+    return error
   }, [])
 
   const signIn = useCallback((email, password) => {
@@ -81,7 +88,7 @@ export function GameProvider({ children }) {
   }, [])
 
   const logout = useCallback(() => {
-    setState({ profile: null, account: null })
+    setState((s) => ({ profile: null, account: s.account ?? null }))
   }, [])
 
   const completeChallenge = useCallback((challengeId) => {

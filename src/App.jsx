@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { GameProvider } from './context/GameProvider.jsx'
+import { useGame } from './context/gameContext.js'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Home from './pages/Home.jsx'
@@ -12,6 +13,12 @@ import Trophies from './pages/Trophies.jsx'
 import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
 
+function RequireAuth({ children }) {
+  const { ready, profile } = useGame()
+  if (!ready) return null
+  return profile ? children : <Navigate to="/login" replace />
+}
+
 export default function App() {
   return (
     <GameProvider>
@@ -19,12 +26,12 @@ export default function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/map" element={<Map />} />
-          <Route path="/land/:landId" element={<Land />} />
-          <Route path="/challenge/:challengeId" element={<Challenge />} />
-          <Route path="/race" element={<Race />} />
-          <Route path="/race-bot" element={<RaceBot />} />
-          <Route path="/trophies" element={<Trophies />} />
+          <Route path="/map" element={<RequireAuth><Map /></RequireAuth>} />
+          <Route path="/land/:landId" element={<RequireAuth><Land /></RequireAuth>} />
+          <Route path="/challenge/:challengeId" element={<RequireAuth><Challenge /></RequireAuth>} />
+          <Route path="/race" element={<RequireAuth><Race /></RequireAuth>} />
+          <Route path="/race-bot" element={<RequireAuth><RaceBot /></RequireAuth>} />
+          <Route path="/trophies" element={<RequireAuth><Trophies /></RequireAuth>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/learn" element={<Navigate to="/map" replace />} />
