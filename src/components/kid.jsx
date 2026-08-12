@@ -50,6 +50,21 @@ export function KidStat({ label, value }) {
   )
 }
 
+export function InitialBadge({ name = 'Friend', className }) {
+  const letter = (String(name).trim().charAt(0) || 'F').toUpperCase()
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        'grid size-8 shrink-0 place-items-center rounded-full bg-primary font-display text-lg font-extrabold text-primary-foreground sm:size-9',
+        className,
+      )}
+    >
+      {letter}
+    </span>
+  )
+}
+
 export function KidNav({ to = '/map', label = 'Map' }) {
   return (
     <Link
