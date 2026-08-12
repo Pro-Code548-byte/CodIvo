@@ -44,6 +44,8 @@
     "Nunito", "Segoe UI", system-ui, sans-serif;
   --font-display:
     "Baloo 2", "Comic Sans MS", system-ui, sans-serif;
+  --font-mono:
+    "Cascadia Code", "Consolas", "Liberation Mono", "SFMono-Regular", Menlo, monospace;
 
   --shadow-chunky: 0 8px 0 0 color-mix(in oklab, var(--color-foreground) 18%, transparent);
   --shadow-pillow: 0 14px 34px -12px color-mix(in oklab, var(--color-foreground) 40%, transparent);

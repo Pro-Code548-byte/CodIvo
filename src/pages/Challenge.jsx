@@ -369,7 +369,7 @@ function BlocksPanel({ palette, program, onChange, onRun, onReset, running, type
           </ol>
         )}
         {typedMode && program.length > 0 && (
-          <pre className="mt-4 overflow-x-auto rounded-2xl bg-secondary/60 p-4 text-lg leading-relaxed">
+          <pre className="mt-4 overflow-x-auto rounded-2xl bg-secondary/60 p-4 font-mono text-lg leading-relaxed">
             <code>{codeGen(program)}</code>
           </pre>
         )}
