@@ -179,12 +179,12 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b-4 border-card/60 bg-background/90 backdrop-blur">
-<nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-2 px-3 py-3 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:gap-3 sm:px-4">
-        <Link to="/" className="font-display text-2xl font-extrabold tracking-tight text-primary no-underline sm:text-3xl">
+<nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-2 px-3 py-3 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-3 lg:px-4">
+        <Link to="/" className="font-display text-2xl font-extrabold tracking-tight text-primary no-underline lg:text-3xl">
           🧩 Codivo
         </Link>
 
-        <ul className="order-3 flex w-full flex-wrap items-center justify-center gap-1.5 p-0 sm:order-none sm:w-auto sm:gap-2">
+        <ul className="order-3 flex w-full flex-wrap items-center justify-center gap-1.5 p-0 lg:order-none lg:w-auto lg:gap-2">
           {navItems.map((item) => {
             const Icon = item.Icon
             return (
@@ -207,17 +207,17 @@ export default function Navbar() {
           })}
         </ul>
 
-<div className="ml-auto flex items-center gap-1.5 sm:ml-0 sm:gap-2 sm:justify-self-end">
+<div className="ml-auto flex items-center gap-1.5 lg:ml-0 lg:gap-2 lg:justify-self-end">
           {ready && profile ? (
             <ProfileMenu profile={profile} onLogout={handleLogout} />
           ) : ready ? (
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <Link to="/login" className="rounded-2xl px-3 py-2 font-display text-base text-foreground no-underline transition-colors duration-100 hover:bg-secondary sm:px-4 sm:text-lg">
+            <div className="flex items-center gap-1.5 lg:gap-2">
+              <Link to="/login" className="rounded-2xl px-3 py-2 font-display text-base text-foreground no-underline transition-colors duration-100 hover:bg-secondary lg:px-4 lg:text-lg">
                 Log in
               </Link>
               <Link
                 to="/signup"
-                className="chunky chunky-press rounded-3xl bg-primary px-3 py-1.5 font-display text-base text-primary-foreground no-underline sm:px-4 sm:py-2 sm:text-lg"
+                className="chunky chunky-press rounded-3xl bg-primary px-3 py-1.5 font-display text-base text-primary-foreground no-underline lg:px-4 lg:py-2 lg:text-lg"
               >
                 Sign up
               </Link>
