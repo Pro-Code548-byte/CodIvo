@@ -2,7 +2,7 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useGame } from '../context/gameContext.js'
 import { AVATARS, companions } from '../data/game.js'
-import { KidButton, HomeIcon, BookOpenIcon, SwordsIcon, BotIcon, TrophyIcon, LogOutIcon, CheckIcon } from './kid.jsx'
+import { KidButton, HomeIcon, BookOpenIcon, SwordsIcon, BotIcon, CheckIcon } from './kid.jsx'
 import { cn } from './cn.js'
 
 const navItems = [
@@ -14,6 +14,21 @@ const navItems = [
 
 const pillBase =
   'inline-flex items-center gap-1.5 rounded-2xl px-2.5 py-1.5 font-display text-base no-underline transition-colors duration-100 sm:px-3 sm:py-2 sm:text-lg'
+
+function InitialBadge({ name = 'Friend', className }) {
+  const letter = (String(name).trim().charAt(0) || 'F').toUpperCase()
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        'grid size-8 shrink-0 place-items-center rounded-full bg-primary font-display text-lg font-extrabold text-primary-foreground sm:size-9',
+        className,
+      )}
+    >
+      {letter}
+    </span>
+  )
+}
 
 function ProfileMenu({ profile, onLogout }) {
   const { updateProfile } = useGame()
@@ -54,15 +69,17 @@ function ProfileMenu({ profile, onLogout }) {
     setDialogOpen(false)
   }
 
+const selectedBuddy = companions.find((c) => c.id === companionId) ?? companions[0]
+
   const headerBtn = (
     <button
       type="button"
       onClick={() => setOpen((o) => !o)}
       aria-haspopup="menu"
       aria-expanded={open}
-className="chunky chunky-press flex items-center gap-1.5 rounded-3xl bg-card px-3 py-1.5 font-display text-base sm:gap-2 sm:px-4 sm:py-2 sm:text-lg"
+      className="chunky chunky-press flex items-center gap-2 rounded-full bg-card py-1.5 pl-1.5 pr-3 font-display text-base sm:py-2 sm:pl-2 sm:pr-4 sm:text-lg"
     >
-      <span className="text-xl sm:text-2xl">{profile?.avatar ?? AVATARS[0]}</span>
+      <InitialBadge name={profile?.name} />
       <span className="max-w-20 truncate sm:max-w-24">{profile?.name}</span>
       <span aria-hidden>▾</span>
     </button>
@@ -73,17 +90,14 @@ className="chunky chunky-press flex items-center gap-1.5 rounded-3xl bg-card px-
       {open ? (
         <div className="flex flex-col items-end gap-1">
           {headerBtn}
-          <div role="menu" className="w-56 animate-fade-in rounded-2xl border-2 border-surface-2 bg-card p-1.5 shadow-pillow">
+<div role="menu" className="w-64 animate-fade-in rounded-3xl border-4 border-card bg-card p-2 shadow-pillow">
             <button
               type="button"
               role="menuitem"
               onClick={openDialog}
-              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-base font-bold text-foreground no-underline transition-colors duration-100 hover:bg-secondary"
+              className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-base font-bold text-foreground no-underline transition-colors duration-100 hover:bg-secondary"
             >
-              <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
+              <span aria-hidden className="text-xl">✏️</span>
               Change name &amp; character
             </button>
             <button
@@ -93,19 +107,19 @@ className="chunky chunky-press flex items-center gap-1.5 rounded-3xl bg-card px-
                 setOpen(false)
                 navigate('/trophies')
               }}
-              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-base font-bold text-foreground no-underline transition-colors duration-100 hover:bg-secondary"
+              className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-base font-bold text-foreground no-underline transition-colors duration-100 hover:bg-secondary"
             >
-              <TrophyIcon className="size-4" />
+              <span aria-hidden className="text-xl">🏆</span>
               My trophies
             </button>
-            <div className="mx-1 my-1 border-t-2 border-dashed border-surface-2" />
+            <div className="mx-2 my-1 border-t-2 border-dashed border-surface-2" />
             <button
               type="button"
               role="menuitem"
               onClick={onLogout}
-              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-base font-bold text-danger transition-colors duration-100 hover:bg-danger/10"
+              className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-base font-bold text-danger transition-colors duration-100 hover:bg-danger/10"
             >
-              <LogOutIcon className="size-4" />
+              <span aria-hidden className="text-xl">👋</span>
               Log out
             </button>
           </div>
@@ -114,48 +128,89 @@ className="chunky chunky-press flex items-center gap-1.5 rounded-3xl bg-card px-
         headerBtn
       )}
 
-      {dialogOpen && (
+{dialogOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md animate-pop-in rounded-3xl border-4 border-card bg-card p-6 shadow-pillow">
-            <h2 className="mb-4 font-display text-2xl">My profile</h2>
-            <label className="font-display text-lg" htmlFor="nav-name">
-              Name
+          <div className="max-h-[90vh] w-full max-w-md animate-pop-in overflow-y-auto rounded-4xl border-4 border-card bg-card p-6 shadow-pillow">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="font-display text-2xl">Change name &amp; character ✏️</h2>
+                <p className="mt-1 text-base text-muted-foreground">
+                  Pick a cool name and a buddy for your adventures!
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setDialogOpen(false)}
+                aria-label="Close"
+                className="chunky chunky-press grid size-10 shrink-0 place-items-center rounded-full bg-secondary text-xl"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mt-4 flex items-center gap-4 rounded-3xl bg-secondary/60 p-4">
+              <InitialBadge name={name || profile?.name} className="size-14 text-3xl sm:size-16 sm:text-4xl" />
+              <div className="min-w-0">
+                <p className="truncate font-display text-2xl">{name.trim() || 'Friend'}</p>
+                <p className="text-base text-muted-foreground">
+                  <span className="mr-1 text-xl">{avatar}</span>
+                  with {selectedBuddy.emoji} {selectedBuddy.name}
+                </p>
+              </div>
+            </div>
+
+            <label className="mt-5 block font-display text-lg" htmlFor="nav-name">
+              Your name
             </label>
             <input
               id="nav-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              maxLength={16}
+              placeholder="e.g. Alex"
               className="mt-1 w-full rounded-2xl border-4 border-input bg-background px-4 py-3 font-display text-xl outline-none focus:border-ring"
             />
-            <p className="mt-4 font-display text-lg">Character</p>
-            <div className="mt-1 flex flex-wrap gap-2">
+
+            <p className="mt-5 font-display text-lg">Character</p>
+            <div className="mt-2 flex flex-wrap gap-2">
               {AVATARS.map((a) => (
                 <button
                   key={a}
                   type="button"
                   onClick={() => setAvatar(a)}
                   aria-label={`avatar ${a}`}
-                  className={cn('chunky chunky-press size-14 rounded-2xl bg-secondary text-3xl', avatar === a && 'ring-4 ring-ring')}
+                  className={cn(
+                    'chunky chunky-press size-14 rounded-2xl bg-secondary text-3xl transition-transform',
+                    avatar === a && 'scale-110 ring-4 ring-ring',
+                  )}
                 >
                   {a}
                 </button>
               ))}
             </div>
-            <p className="mt-4 font-display text-lg">Buddy</p>
-            <div className="mt-1 grid grid-cols-4 gap-2">
+
+            <p className="mt-5 font-display text-lg">Buddy</p>
+            <div className="mt-2 grid grid-cols-4 gap-2">
               {companions.map((c) => (
                 <button
                   key={c.id}
                   type="button"
                   onClick={() => setCompanionId(c.id)}
-                  className={cn('chunky chunky-press rounded-2xl bg-sunny p-2 text-sunny-foreground', companionId === c.id && 'ring-4 ring-ring')}
+                  className={cn(
+                    'chunky chunky-press rounded-2xl bg-sunny p-2 text-sunny-foreground',
+                    companionId === c.id && 'ring-4 ring-ring',
+                  )}
                 >
                   <span className="block text-3xl">{c.emoji}</span>
                   <span className="block font-display text-sm">{c.name}</span>
                 </button>
               ))}
             </div>
-            <div className="mt-4 flex justify-end">
+
+            <div className="mt-6 flex justify-end gap-2">
+              <KidButton tone="muted" onClick={() => setDialogOpen(false)}>
+                Cancel
+              </KidButton>
               <KidButton tone="jungle" onClick={save} className="inline-flex items-center gap-2">
                 <CheckIcon className="size-5" />
                 Save
