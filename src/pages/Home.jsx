@@ -6,7 +6,7 @@ import { useGame } from '../context/gameContext.js'
 import { challenges, lands, stickers } from '../data/game.js'
 
 const features = [
-  { title: 'Learn', text: 'Step-by-step lessons in HTML, CSS and Python.', to: '/map', Icon: BookOpenIcon, emoji: '📚' },
+  { title: 'Learn', text: 'Step-by-step lessons in HTML, CSS and Python.', to: '/learn', Icon: BookOpenIcon, emoji: '📚' },
   { title: 'Duel', text: 'Two friends code side by side in a friendly match.', to: '/race', Icon: SwordsIcon, emoji: '⚔️' },
   { title: 'Race Bot', text: 'Race Codi Bot in a speed run of your code steps.', to: '/race-bot', Icon: BotIcon, emoji: '🤖' },
 ]

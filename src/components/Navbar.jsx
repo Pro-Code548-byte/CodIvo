@@ -6,7 +6,7 @@ import { cn } from './cn.js'
 
 const navItems = [
   { to: '/', label: 'Home', Icon: HomeIcon, exact: true },
-  { to: '/map', label: 'Learn', Icon: BookOpenIcon, exact: false },
+  { to: '/learn', label: 'Learn', Icon: BookOpenIcon, exact: false },
   { to: '/race', label: 'Duel', Icon: SwordsIcon, exact: false },
   { to: '/race-bot', label: 'Race Bot', Icon: BotIcon, exact: false },
 ]

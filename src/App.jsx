@@ -4,6 +4,7 @@ import { useGame } from './context/gameContext.js'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Home from './pages/Home.jsx'
+import Learn from './pages/Learn.jsx'
 import Map from './pages/Map.jsx'
 import Land from './pages/Land.jsx'
 import Challenge from './pages/Challenge.jsx'
@@ -28,6 +29,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/map" element={<RequireAuth><Map /></RequireAuth>} />
+          <Route path="/learn" element={<RequireAuth><Learn /></RequireAuth>} />
           <Route path="/land/:landId" element={<RequireAuth><Land /></RequireAuth>} />
           <Route path="/challenge/:challengeId" element={<RequireAuth><Challenge /></RequireAuth>} />
           <Route path="/race" element={<RequireAuth><Race /></RequireAuth>} />
@@ -36,7 +38,6 @@ export default function App() {
           <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/learn" element={<Navigate to="/map" replace />} />
           <Route path="/duel" element={<Navigate to="/race" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -197,6 +197,54 @@ export const challenges = [
   },
 ]
 
+export const curriculum = [
+  {
+    id: 'html',
+    title: 'HTML',
+    emoji: '🏗️',
+    blurb: 'Build the bones of a web page.',
+    themeClass: 'bg-ocean text-ocean-foreground',
+    topics: [
+      { id: 'html-1', title: 'What is a web page?', emoji: '🕸️', text: 'Web pages are made of small pieces called tags — like LEGO bricks that snap together!' },
+      { id: 'html-2', title: 'Headings & paragraphs', emoji: '📝', text: 'Big headings and little paragraphs organize everything you read on a page.' },
+      { id: 'html-3', title: 'Links & lists', emoji: '🔗', text: 'Links jump to other pages, and lists line up your favorite things.' },
+      { id: 'html-4', title: 'Images', emoji: '🖼️', text: 'Add pictures to make your page pop and tell your story.' },
+      { id: 'html-5', title: 'Putting it together', emoji: '🏠', text: 'Nest tags like boxes inside boxes to build a whole page from scratch.' },
+      { id: 'html-6', title: 'HTML challenge', emoji: '🎯', text: 'Beat the First Tag game and earn your very first sticker!' },
+    ],
+  },
+  {
+    id: 'css',
+    title: 'CSS',
+    emoji: '🎨',
+    blurb: 'Paint and style your pages.',
+    themeClass: 'bg-candy text-candy-foreground',
+    topics: [
+      { id: 'css-1', title: 'Colors', emoji: '🖌️', text: 'Give text and boxes any color you can dream of.' },
+      { id: 'css-2', title: 'Fonts & text', emoji: '✍️', text: 'Change how words look — big, bold, curly or neat.' },
+      { id: 'css-3', title: 'Boxes', emoji: '🧱', text: 'Every element is a box. Add padding, borders and margins to shape it.' },
+      { id: 'css-4', title: 'Layouts', emoji: '🧭', text: 'Put things side by side or stacked with modern layout magic.' },
+      { id: 'css-5', title: 'Making it responsive', emoji: '📱', text: 'Make your page look great on phones, tablets and big screens.' },
+      { id: 'css-6', title: 'CSS challenge', emoji: '🎯', text: 'Beat the Color It In game and earn your Color Brush sticker!' },
+    ],
+  },
+  {
+    id: 'python',
+    title: 'Python',
+    emoji: '🐍',
+    blurb: 'Teach the computer to think.',
+    themeClass: 'bg-jungle text-jungle-foreground',
+    topics: [
+      { id: 'python-1', title: 'Hello, Python!', emoji: '👋', text: 'Say hello to the computer and run your first lines of code.' },
+      { id: 'python-2', title: 'Variables', emoji: '📦', text: 'Store numbers and words in boxes so you can use them later.' },
+      { id: 'python-3', title: 'Loops', emoji: '🔁', text: 'Repeat actions without writing them again and again.' },
+      { id: 'python-4', title: 'Conditions', emoji: '🧠', text: 'Make choices: if this happens, do that!' },
+      { id: 'python-5', title: 'Functions', emoji: '🧩', text: 'Wrap code into pieces you can reuse over and over.' },
+      { id: 'python-6', title: 'Python challenge', emoji: '🎯', text: 'Beat the Hello, Python game and earn your Python Pal sticker!' },
+    ],
+  },
+]
+
 export const conceptLabels = {
   sequencing: 'Putting steps in order',
   loops: 'Repeating steps (loops)',

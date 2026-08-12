@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 const links = [
   { to: '/', label: 'Home 🏠' },
-  { to: '/map', label: 'Learn 🚀' },
+  { to: '/learn', label: 'Learn 🚀' },
   { to: '/race', label: 'Duel ⚔️' },
   { to: '/race-bot', label: 'Race Bot 🤖' },
   { to: '/trophies', label: 'Trophies 🏆' },
