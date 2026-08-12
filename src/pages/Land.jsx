@@ -18,9 +18,9 @@ export default function Land() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8">
-<div className="flex items-center justify-between gap-3">
+<div className="flex flex-wrap items-center justify-between gap-3">
         <KidNav />
-        <h1 className={cn('rounded-3xl px-5 py-2 font-display text-3xl sm:text-4xl', land.themeClass)}>
+        <h1 className={cn('rounded-3xl px-5 py-2 font-display text-2xl sm:text-4xl', land.themeClass)}>
           {land.emoji} {land.name} ✨
         </h1>
       </div>

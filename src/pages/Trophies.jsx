@@ -12,9 +12,9 @@ export default function Trophies() {
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8">
-      <div className="flex items-center justify-between gap-3">
+<div className="flex flex-wrap items-center justify-between gap-3">
         <KidNav />
-        <h1 className="font-display text-4xl">My Shelf ðŸ†</h1>
+        <h1 className="font-display text-3xl sm:text-4xl">My Shelf 🏆</h1>
       </div>
 
       <div className="mt-6">

@@ -18,10 +18,10 @@ export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10">
 <section className="animate-fade-in text-center">
-        <h1 className="font-display text-5xl font-extrabold leading-tight sm:text-6xl">
+        <h1 className="font-display text-4xl font-extrabold leading-tight sm:text-6xl">
           Learn coding <span className={headingGradient}>the fun way</span> 🎮
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-xl text-muted-foreground">
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground sm:text-xl">
           Codivo turns coding into a game for kids ages 6–12. Build with HTML, style with CSS,
           think with Python — and collect trophies along the way.
         </p>
@@ -41,7 +41,7 @@ export default function Home() {
                 className="chunky chunky-press inline-flex items-center gap-2 rounded-3xl bg-primary px-6 py-4 font-display text-xl font-extrabold text-primary-foreground no-underline sm:text-2xl"
               >
                 <RocketIcon className="size-6" aria-hidden />
-                Start free
+                Sign up
               </Link>
               <Link
                 to="/login"

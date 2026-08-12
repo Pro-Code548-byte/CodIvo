@@ -57,9 +57,9 @@ useEffect(() => {
 return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8">
       <Confetti active={done} />
-      <div className="flex items-center justify-between gap-3">
+<div className="flex flex-wrap items-center justify-between gap-3">
         <KidNav />
-        <h1 className="font-display text-4xl">Play with a Friend ðŸ</h1>
+        <h1 className="font-display text-3xl sm:text-4xl">Play with a Friend 🏁</h1>
       </div>
 
       <div className="mt-6">

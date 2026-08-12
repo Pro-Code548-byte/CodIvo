@@ -41,11 +41,11 @@ export default function Companion({ lines, size = 'md', tone = 'card' }) {
   }, [list])
 
   return (
-    <div className="flex items-end gap-3">
+<div className="flex w-full max-w-full items-end gap-3 sm:w-auto">
       <CompanionAvatar size={size} />
       <div
         className={cn(
-          'pillow relative max-w-md rounded-3xl px-5 py-4 text-lg font-bold',
+          'pillow relative min-w-0 max-w-md flex-1 rounded-3xl px-4 py-3 text-base font-bold sm:flex-none sm:px-5 sm:py-4 sm:text-lg',
           tone === 'sunny' ? 'bg-sunny text-sunny-foreground' : 'bg-card text-card-foreground',
         )}
       >

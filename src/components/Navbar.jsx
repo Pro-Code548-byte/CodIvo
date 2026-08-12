@@ -12,7 +12,8 @@ const navItems = [
   { to: '/race-bot', label: 'Race Bot', Icon: BotIcon, exact: false },
 ]
 
-const pillBase = 'inline-flex items-center gap-1.5 rounded-2xl px-3 py-2 font-display text-lg no-underline transition-colors duration-100'
+const pillBase =
+  'inline-flex items-center gap-1.5 rounded-2xl px-2.5 py-1.5 font-display text-base no-underline transition-colors duration-100 sm:px-3 sm:py-2 sm:text-lg'
 
 function ProfileMenu({ profile, onLogout }) {
   const { updateProfile } = useGame()
@@ -59,11 +60,11 @@ function ProfileMenu({ profile, onLogout }) {
       onClick={() => setOpen((o) => !o)}
       aria-haspopup="menu"
       aria-expanded={open}
-      className="chunky chunky-press flex items-center gap-2 rounded-3xl bg-card px-4 py-2 font-display text-lg"
+className="chunky chunky-press flex items-center gap-1.5 rounded-3xl bg-card px-3 py-1.5 font-display text-base sm:gap-2 sm:px-4 sm:py-2 sm:text-lg"
     >
-      <span className="text-2xl">{profile?.avatar ?? AVATARS[0]}</span>
-      <span className="max-w-24 truncate">{profile?.name}</span>
-      <span aria-hidden>â–¾</span>
+      <span className="text-xl sm:text-2xl">{profile?.avatar ?? AVATARS[0]}</span>
+      <span className="max-w-20 truncate sm:max-w-24">{profile?.name}</span>
+      <span aria-hidden>▾</span>
     </button>
   )
 
@@ -178,12 +179,12 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b-4 border-card/60 bg-background/90 backdrop-blur">
-<nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-3 px-4 py-3 sm:grid sm:grid-cols-[1fr_auto_1fr]">
-        <Link to="/" className="font-display text-3xl font-extrabold tracking-tight text-primary no-underline">
+<nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-2 px-3 py-3 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:gap-3 sm:px-4">
+        <Link to="/" className="font-display text-2xl font-extrabold tracking-tight text-primary no-underline sm:text-3xl">
           🧩 Codivo
         </Link>
 
-        <ul className="order-3 flex w-full flex-wrap items-center justify-center gap-2 p-0 sm:order-none sm:w-auto">
+        <ul className="order-3 flex w-full flex-wrap items-center justify-center gap-1.5 p-0 sm:order-none sm:w-auto sm:gap-2">
           {navItems.map((item) => {
             const Icon = item.Icon
             return (
@@ -206,17 +207,17 @@ export default function Navbar() {
           })}
         </ul>
 
-        <div className="ml-auto flex items-center gap-2 sm:ml-0 sm:justify-self-end">
+<div className="ml-auto flex items-center gap-1.5 sm:ml-0 sm:gap-2 sm:justify-self-end">
           {ready && profile ? (
             <ProfileMenu profile={profile} onLogout={handleLogout} />
           ) : ready ? (
-            <div className="flex items-center gap-2">
-              <Link to="/login" className="rounded-2xl px-4 py-2 font-display text-lg text-foreground no-underline transition-colors duration-100 hover:bg-secondary">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Link to="/login" className="rounded-2xl px-3 py-2 font-display text-base text-foreground no-underline transition-colors duration-100 hover:bg-secondary sm:px-4 sm:text-lg">
                 Log in
               </Link>
               <Link
                 to="/signup"
-                className="chunky chunky-press rounded-3xl bg-primary px-4 py-2 font-display text-lg text-primary-foreground no-underline"
+                className="chunky chunky-press rounded-3xl bg-primary px-3 py-1.5 font-display text-base text-primary-foreground no-underline sm:px-4 sm:py-2 sm:text-lg"
               >
                 Sign up
               </Link>

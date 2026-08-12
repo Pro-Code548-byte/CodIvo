@@ -54,9 +54,9 @@ export function KidNav({ to = '/map', label = 'Map' }) {
   return (
     <Link
       to={to}
-      className="chunky chunky-press inline-flex items-center gap-1.5 rounded-3xl bg-card px-4 py-2 font-display text-lg text-card-foreground no-underline shadow-pillow"
+      className="chunky chunky-press inline-flex items-center gap-1.5 rounded-3xl bg-card px-3 py-1.5 font-display text-base text-card-foreground no-underline shadow-pillow sm:px-4 sm:py-2 sm:text-lg"
     >
-      <span aria-hidden className="text-xl">
+      <span aria-hidden className="text-lg sm:text-xl">
         🏠
       </span>
       {label}
