@@ -178,12 +178,12 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b-4 border-card/60 bg-background/90 backdrop-blur">
-      <nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-3 px-4 py-3">
-<Link to="/" className="font-display text-3xl font-extrabold tracking-tight text-primary no-underline">
+<nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-3 px-4 py-3 sm:grid sm:grid-cols-[1fr_auto_1fr]">
+        <Link to="/" className="font-display text-3xl font-extrabold tracking-tight text-primary no-underline">
           🧩 Codivo
         </Link>
 
-        <ul className="order-3 flex w-full flex-wrap items-center gap-2 p-0 sm:order-none sm:w-auto sm:pl-4">
+        <ul className="order-3 flex w-full flex-wrap items-center justify-center gap-2 p-0 sm:order-none sm:w-auto">
           {navItems.map((item) => {
             const Icon = item.Icon
             return (
@@ -206,7 +206,7 @@ export default function Navbar() {
           })}
         </ul>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-2 sm:ml-0 sm:justify-self-end">
           {ready && profile ? (
             <ProfileMenu profile={profile} onLogout={handleLogout} />
           ) : ready ? (

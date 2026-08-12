@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Companion from '../components/Companion.jsx'
-import { Confetti, KidButton, KidCard, KidNav } from '../components/kid.jsx'
+import { Confetti, KidButton, KidNav } from '../components/kid.jsx'
 import { cn } from '../components/cn.js'
 import { useGame } from '../context/gameContext.js'
 
@@ -22,7 +22,7 @@ function ProgressRow({ label, value, flag }) {
 }
 
 export default function Race() {
-  const { profile, parent } = useGame()
+  const { profile } = useGame()
   const [mode, setMode] = useState('race')
   const [running, setRunning] = useState(false)
   const [you, setYou] = useState(0)
@@ -54,20 +54,7 @@ useEffect(() => {
     setRunning(false)
   }
 
-  if (!parent.raceEnabled) {
-    return (
-      <main className="mx-auto w-full max-w-2xl px-4 py-10 text-center">
-        <KidNav />
-        <KidCard className="mt-6 p-8">
-          <p className="text-6xl">ðŸ”’</p>
-          <p className="mt-3 text-2xl font-bold">Races are turned off right now.</p>
-          <p className="text-lg text-muted-foreground">A grown-up can turn them back on.</p>
-        </KidCard>
-      </main>
-    )
-  }
-
-  return (
+return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8">
       <Confetti active={done} />
       <div className="flex items-center justify-between gap-3">

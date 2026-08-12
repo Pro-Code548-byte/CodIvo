@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { GameContext } from './gameContext.js'
 import {
   AVATARS,
-  DEFAULT_PARENT,
   companions,
   getChallengesInLand,
   getChallenge,
@@ -10,7 +9,7 @@ import {
 
 const STORAGE_KEY = 'codivo-kids-state-v2'
 
-const DEFAULT_STATE = { profile: null, parent: DEFAULT_PARENT, account: null }
+const DEFAULT_STATE = { profile: null, account: null }
 
 function makeProfile(name, email) {
   return {
@@ -53,7 +52,6 @@ export function GameProvider({ children }) {
     setState((s) => ({
       ...s,
       account: { email: value, password },
-      parent: { ...s.parent, email: value },
       profile: s.profile ?? makeProfile(value.split('@')[0], value),
     }))
     return null
@@ -83,7 +81,7 @@ export function GameProvider({ children }) {
   }, [])
 
   const logout = useCallback(() => {
-    setState({ profile: null, parent: DEFAULT_PARENT, account: null })
+    setState({ profile: null, account: null })
   }, [])
 
   const completeChallenge = useCallback((challengeId) => {
@@ -137,20 +135,11 @@ export function GameProvider({ children }) {
     )
   }, [])
 
-  const updateParent = useCallback((patch) => {
-    setState((s) => ({ ...s, parent: { ...s.parent, ...patch } }))
-  }, [])
-
-  const resetAll = useCallback(() => {
-    setState({ profile: null, parent: DEFAULT_PARENT, account: null })
-  }, [])
-
   return (
     <GameContext.Provider
       value={{
         ready,
         profile: state.profile,
-        parent: state.parent,
         account: state.account,
         signUp,
         signIn,
@@ -159,8 +148,6 @@ export function GameProvider({ children }) {
         updateProfile,
         chooseOutfit,
         addMinutes,
-        updateParent,
-        resetAll,
       }}
     >
       {children}

@@ -17,21 +17,9 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10">
-<section className="relative animate-fade-in text-center">
-        <span aria-hidden className="absolute left-2 top-2 animate-float text-4xl sm:left-10 sm:top-6">
-          👾
-        </span>
-        <span aria-hidden className="absolute right-2 top-4 animate-bob text-4xl sm:right-12 sm:top-8">
-          🎨
-        </span>
-        <span aria-hidden className="absolute bottom-8 left-8 hidden animate-bob text-3xl sm:block sm:left-24">
-          🎧
-        </span>
-        <span aria-hidden className="absolute bottom-10 right-6 hidden animate-float text-3xl sm:block sm:right-20">
-          🚀
-        </span>
+<section className="animate-fade-in text-center">
         <h1 className="font-display text-5xl font-extrabold leading-tight sm:text-6xl">
-          Learn to code by <span className={headingGradient}>playing</span> 🎮
+          Learn coding <span className={headingGradient}>the fun way</span> 🎮
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-xl text-muted-foreground">
           Codivo turns coding into a game for kids ages 6–12. Build with HTML, style with CSS,
@@ -124,13 +112,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
-
-      <p className="pb-6 pt-4 text-center">
-        <Link to="/parents" className="text-lg underline">
-          Grown-ups: open the Parent Dashboard 🧑‍💼
-        </Link>
-      </p>
+</section>
     </main>
   )
 }

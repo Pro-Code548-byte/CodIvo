@@ -220,14 +220,6 @@ export const blockTypes = {
   },
 }
 
-export const DEFAULT_PARENT = {
-  id: 'parent-1',
-  email: 'grownup@example.com',
-  pin: '1234',
-  dailyMinutesLimit: 30,
-  raceEnabled: true,
-}
-
 export function getLand(id) {
   return lands.find((l) => l.id === id)
 }
