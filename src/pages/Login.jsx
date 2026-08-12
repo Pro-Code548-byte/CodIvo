@@ -1,81 +1,77 @@
 import { useState } from 'react'
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { auth, authErrorMessage } from '../firebase.js'
-import { useAuth } from '../context/authContext.js'
-import { btnPrimary } from '../components/buttonClasses.js'
-import { headingGradient } from '../components/headingClasses.js'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { KidButton, KidCard } from '../components/kid.jsx'
+import { useGame } from '../context/gameContext.js'
 
 const inputClasses =
-  'rounded-[10px] border-2 border-surface-2 bg-bg px-3.5 py-2.5 text-base font-medium text-ink transition-all duration-150 shadow-[0_2px_0_0_var(--color-surface-2)] focus:border-primary focus:outline-none focus:shadow-[0_3px_0_0_var(--color-primary)]'
+  'mt-2 w-full rounded-3xl border-4 border-input bg-background px-5 py-3 text-lg outline-none focus:border-ring'
 
 export default function Login() {
-  const { user } = useAuth()
+  const { ready, profile, signIn } = useGame()
   const navigate = useNavigate()
-  const location = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [submitting, setSubmitting] = useState(false)
 
-  const from = location.state?.from?.pathname ?? '/'
+  if (ready && profile) return <Navigate to="/map" replace />
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setSubmitting(true)
-    try {
-      await signInWithEmailAndPassword(auth, email, password)
-      navigate(from, { replace: true })
-    } catch (err) {
-      setError(authErrorMessage(err.code))
-      setSubmitting(false)
+  const submit = () => {
+    const err = signIn(email, password)
+    if (err) {
+      setError(err)
+      return
     }
+    navigate('/map')
   }
 
-  if (user) return <Navigate to="/" replace />
-
   return (
-    <section className="flex animate-fade-in justify-center">
-      <div className="w-full max-w-[400px] rounded-[14px] border-2 border-surface-2 bg-surface p-6 shadow-[0_5px_0_0_var(--color-surface-2)] sm:p-8">
-        <h1 className={`mb-2 text-center text-[clamp(1.9rem,6vw,2.2rem)] font-extrabold ${headingGradient}`}>
-          Log In
-        </h1>
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-muted">
+    <main className="mx-auto w-full max-w-md px-4 py-10">
+      <h1 className="text-center font-display text-4xl">Welcome back 👋</h1>
+      <KidCard className="mt-6 p-6">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            submit()
+          }}
+        >
+          <label htmlFor="login-email" className="font-display text-xl">
             Email
-            <input
-              className={inputClasses}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="you@example.com"
-            />
           </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-muted">
+          <input
+            id="login-email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            className={inputClasses}
+          />
+          <label htmlFor="login-password" className="mt-5 block font-display text-xl">
             Password
-            <input
-              className={inputClasses}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Your password"
-            />
           </label>
-          <button type="submit" disabled={submitting} className={`${btnPrimary} w-full`}>
-            {submitting ? 'Logging in…' : 'Log In'}
-          </button>
+          <input
+            id="login-password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Your password"
+            className={inputClasses}
+          />
+          {error && <p className="mt-3 text-lg text-destructive">{error}</p>}
+          <div className="mt-6 flex justify-center">
+            <KidButton tone="primary" type="submit" className="px-10 py-4 text-xl">
+              🔑 Log in
+            </KidButton>
+          </div>
         </form>
-        {error && <p className="mt-4 text-lg font-bold text-danger">{error}</p>}
-        <p className="mt-5 text-center text-muted">
-          New here?{' '}
-          <Link to="/signup" className="no-underline text-accent hover:underline">
-            Create an account
-          </Link>
-        </p>
-      </div>
-    </section>
+      </KidCard>
+      <p className="mt-6 text-center text-lg">
+        New here?{' '}
+        <Link to="/signup" className="underline">
+          Create an account
+        </Link>
+      </p>
+    </main>
   )
 }

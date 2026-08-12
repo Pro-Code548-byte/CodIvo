@@ -1,190 +1,229 @@
-import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import { signOut } from 'firebase/auth'
-import { auth } from '../firebase.js'
-import { useAuth } from '../context/authContext.js'
+﻿import { useEffect, useRef, useState } from 'react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useGame } from '../context/gameContext.js'
+import { AVATARS, companions } from '../data/game.js'
+import { KidButton, HomeIcon, BookOpenIcon, SwordsIcon, BotIcon, TrophyIcon, LogOutIcon, CheckIcon } from './kid.jsx'
+import { cn } from './cn.js'
 
 const navItems = [
-  { to: '/', label: 'Home' },
-  { to: '/learn', label: 'Learn' },
-  { to: '/duel', label: 'Duel' },
-  { to: '/race', label: 'Race the Bot' },
-  { to: '/help', label: 'Help' },
+  { to: '/', label: 'Home', Icon: HomeIcon, exact: true },
+  { to: '/map', label: 'Learn', Icon: BookOpenIcon, exact: false },
+  { to: '/race', label: 'Duel', Icon: SwordsIcon, exact: false },
+  { to: '/race-bot', label: 'Race Bot', Icon: BotIcon, exact: false },
 ]
 
-const linkBase =
-  'block rounded-full border-2 px-4 py-1.5 text-sm font-extrabold no-underline transition-all duration-100 active:translate-y-0.5 active:shadow-none'
+const pillBase = 'inline-flex items-center gap-1.5 rounded-2xl px-3 py-2 font-display text-lg no-underline transition-colors duration-100'
 
-export default function Navbar() {
-  const { user } = useAuth()
-  const [dark, setDark] = useState(() =>
-    typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),
-  )
+function ProfileMenu({ profile, onLogout }) {
+  const { updateProfile } = useGame()
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [name, setName] = useState(profile?.name ?? '')
+  const [avatar, setAvatar] = useState(profile?.avatar ?? AVATARS[0])
+  const [companionId, setCompanionId] = useState(profile?.companionId ?? companions[0].id)
+  const ref = useRef(null)
 
-  const handleLogout = async () => {
-    await signOut(auth)
+  useEffect(() => {
+    if (!open) return undefined
+    const onPointerDown = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+    }
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [open])
+
+  const openDialog = () => {
+    setName(profile?.name ?? '')
+    setAvatar(profile?.avatar ?? AVATARS[0])
+    setCompanionId(profile?.companionId ?? companions[0].id)
     setOpen(false)
+    setDialogOpen(true)
   }
 
-  const toggleTheme = () => {
-    const next = !dark
-    setDark(next)
-    document.documentElement.classList.toggle('dark', next)
-    localStorage.setItem('codivo-theme', next ? 'dark' : 'light')
+  const save = () => {
+    updateProfile({ name: name.trim() || profile?.name || 'Friend', avatar, companionId })
+    setDialogOpen(false)
+  }
+
+  const headerBtn = (
+    <button
+      type="button"
+      onClick={() => setOpen((o) => !o)}
+      aria-haspopup="menu"
+      aria-expanded={open}
+      className="chunky chunky-press flex items-center gap-2 rounded-3xl bg-card px-4 py-2 font-display text-lg"
+    >
+      <span className="text-2xl">{profile?.avatar ?? AVATARS[0]}</span>
+      <span className="max-w-24 truncate">{profile?.name}</span>
+      <span aria-hidden>â–¾</span>
+    </button>
+  )
+
+  return (
+    <div ref={ref} className="relative">
+      {open ? (
+        <div className="flex flex-col items-end gap-1">
+          {headerBtn}
+          <div role="menu" className="w-56 animate-fade-in rounded-2xl border-2 border-surface-2 bg-card p-1.5 shadow-pillow">
+            <button
+              type="button"
+              role="menuitem"
+              onClick={openDialog}
+              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-base font-bold text-foreground no-underline transition-colors duration-100 hover:bg-secondary"
+            >
+              <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              Change name &amp; character
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setOpen(false)
+                navigate('/trophies')
+              }}
+              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-base font-bold text-foreground no-underline transition-colors duration-100 hover:bg-secondary"
+            >
+              <TrophyIcon className="size-4" />
+              My trophies
+            </button>
+            <div className="mx-1 my-1 border-t-2 border-dashed border-surface-2" />
+            <button
+              type="button"
+              role="menuitem"
+              onClick={onLogout}
+              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-base font-bold text-danger transition-colors duration-100 hover:bg-danger/10"
+            >
+              <LogOutIcon className="size-4" />
+              Log out
+            </button>
+          </div>
+        </div>
+      ) : (
+        headerBtn
+      )}
+
+      {dialogOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md animate-pop-in rounded-3xl border-4 border-card bg-card p-6 shadow-pillow">
+            <h2 className="mb-4 font-display text-2xl">My profile</h2>
+            <label className="font-display text-lg" htmlFor="nav-name">
+              Name
+            </label>
+            <input
+              id="nav-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1 w-full rounded-2xl border-4 border-input bg-background px-4 py-3 font-display text-xl outline-none focus:border-ring"
+            />
+            <p className="mt-4 font-display text-lg">Character</p>
+            <div className="mt-1 flex flex-wrap gap-2">
+              {AVATARS.map((a) => (
+                <button
+                  key={a}
+                  type="button"
+                  onClick={() => setAvatar(a)}
+                  aria-label={`avatar ${a}`}
+                  className={cn('chunky chunky-press size-14 rounded-2xl bg-secondary text-3xl', avatar === a && 'ring-4 ring-ring')}
+                >
+                  {a}
+                </button>
+              ))}
+            </div>
+            <p className="mt-4 font-display text-lg">Buddy</p>
+            <div className="mt-1 grid grid-cols-4 gap-2">
+              {companions.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => setCompanionId(c.id)}
+                  className={cn('chunky chunky-press rounded-2xl bg-sunny p-2 text-sunny-foreground', companionId === c.id && 'ring-4 ring-ring')}
+                >
+                  <span className="block text-3xl">{c.emoji}</span>
+                  <span className="block font-display text-sm">{c.name}</span>
+                </button>
+              ))}
+            </div>
+            <div className="mt-4 flex justify-end">
+              <KidButton tone="jungle" onClick={save} className="inline-flex items-center gap-2">
+                <CheckIcon className="size-5" />
+                Save
+              </KidButton>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default function Navbar() {
+  const { profile, ready, logout } = useGame()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
   }
 
   return (
-    <nav className="relative sticky top-0 z-50 flex flex-wrap items-center justify-between gap-3 border-b-2 border-surface-2 bg-bg px-4 py-4 sm:px-6">
-      <NavLink
-        to="/"
-        className="group flex items-center gap-2.5 text-[1.4rem] font-extrabold tracking-wide no-underline hover:animate-wiggle"
-      >
-        <span className="flex size-9 items-center justify-center rounded-[10px] border-2 border-primary-hover bg-primary shadow-[0_3px_0_0_var(--color-primary-hover)] transition-transform duration-150 group-hover:rotate-12">
-          <svg
-            className="size-5 text-white"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M18.4 5.6l-2.1 2.1m-8.6 8.6-2.1 2.1" />
-          </svg>
-        </span>
-        <span>
-          <span className="text-primary">Cod</span> <span className="text-accent">Ivo</span>
-        </span>
-      </NavLink>
-      <ul
-        className={`${
-          open ? 'max-sm:flex' : 'max-sm:hidden'
-        } m-0 flex flex-wrap list-none gap-1 p-0 max-sm:absolute max-sm:inset-x-4 max-sm:top-full max-sm:z-10 max-sm:mt-2 max-sm:flex-col max-sm:gap-1 max-sm:rounded-[14px] max-sm:border-2 max-sm:border-surface-2 max-sm:bg-bg max-sm:p-2 max-sm:shadow-[0_4px_0_0_var(--color-surface-2)]`}
-      >
-        {navItems.map((item) => (
-          <li key={item.to}>
-            <NavLink
-              to={item.to}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                isActive
-                  ? `${linkBase} border-primary-hover bg-primary text-white shadow-[0_3px_0_0_var(--color-primary-hover)]`
-                  : `${linkBase} border-surface-2 bg-bg text-muted shadow-[0_3px_0_0_var(--color-surface-2)] hover:-translate-y-0.5 hover:border-primary hover:text-ink`
-              }
-            >
-              {item.label}
-            </NavLink>
-          </li>
-        ))}
-        {user ? (
-          <li>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className={`${linkBase} w-full border-surface-2 bg-bg text-muted shadow-[0_3px_0_0_var(--color-surface-2)] hover:-translate-y-0.5 hover:border-danger hover:text-danger`}
-            >
-              Log Out
-            </button>
-          </li>
-        ) : (
-          <>
-            <li>
-              <NavLink
-                to="/login"
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  isActive
-                    ? `${linkBase} border-primary-hover bg-primary text-white shadow-[0_3px_0_0_var(--color-primary-hover)]`
-                    : `${linkBase} border-surface-2 bg-bg text-muted shadow-[0_3px_0_0_var(--color-surface-2)] hover:-translate-y-0.5 hover:border-primary hover:text-ink`
-                }
-              >
-                Login
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
+    <header className="sticky top-0 z-40 border-b-4 border-card/60 bg-background/90 backdrop-blur">
+      <nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-3 px-4 py-3">
+<Link to="/" className="font-display text-3xl font-extrabold tracking-tight text-primary no-underline">
+          🧩 Codivo
+        </Link>
+
+        <ul className="order-3 flex w-full flex-wrap items-center gap-2 p-0 sm:order-none sm:w-auto sm:pl-4">
+          {navItems.map((item) => {
+            const Icon = item.Icon
+            return (
+              <li key={item.to}>
+                <NavLink
+                  to={item.to}
+                  end={item.exact}
+                  className={({ isActive }) =>
+                    cn(
+                      pillBase,
+                      isActive ? 'bg-sunny text-sunny-foreground' : 'text-foreground hover:bg-secondary',
+                    )
+                  }
+                >
+                  <Icon size={22} />
+                  {item.label}
+                </NavLink>
+              </li>
+            )
+          })}
+        </ul>
+
+        <div className="ml-auto flex items-center gap-2">
+          {ready && profile ? (
+            <ProfileMenu profile={profile} onLogout={handleLogout} />
+          ) : ready ? (
+            <div className="flex items-center gap-2">
+              <Link to="/login" className="rounded-2xl px-4 py-2 font-display text-lg text-foreground no-underline transition-colors duration-100 hover:bg-secondary">
+                Log in
+              </Link>
+              <Link
                 to="/signup"
-                onClick={() => setOpen(false)}
-                className={`${linkBase} border-accent-hover bg-accent text-white shadow-[0_3px_0_0_var(--color-accent-hover)] enabled:hover:-translate-y-0.5 enabled:hover:brightness-110`}
+                className="chunky chunky-press rounded-3xl bg-primary px-4 py-2 font-display text-lg text-primary-foreground no-underline"
               >
-                Sign Up
-              </NavLink>
-            </li>
-          </>
-        )}
-      </ul>
-      <div className="flex items-center gap-1">
-        {user && (
-          <span className="hidden rounded-full border-2 border-surface-2 bg-surface px-3.5 py-1 text-sm font-bold text-muted sm:block">
-            Hi, {user.displayName ?? user.email}
-          </span>
-        )}
-        <button
-          type="button"
-          onClick={toggleTheme}
-          aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-          className="rounded-[10px] border-2 border-surface-2 p-2 text-muted shadow-[0_3px_0_0_var(--color-surface-2)] transition-all duration-100 active:translate-y-0.5 active:shadow-none hover:-translate-y-0.5 hover:border-primary hover:text-ink"
-        >
-          {dark ? (
-            <svg
-              className="size-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4" />
-            </svg>
-          ) : (
-            <svg
-              className="size-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-            </svg>
-          )}
-        </button>
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          className="hidden rounded-[10px] border-2 border-surface-2 p-2 text-muted shadow-[0_3px_0_0_var(--color-surface-2)] transition-all duration-100 active:translate-y-0.5 active:shadow-none hover:-translate-y-0.5 hover:border-primary hover:text-ink max-sm:block"
-        >
-          {open ? (
-            <svg
-              className="size-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            >
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          ) : (
-            <svg
-              className="size-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            >
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          )}
-        </button>
-      </div>
-    </nav>
+                Sign up
+              </Link>
+            </div>
+          ) : null}
+        </div>
+      </nav>
+    </header>
   )
 }

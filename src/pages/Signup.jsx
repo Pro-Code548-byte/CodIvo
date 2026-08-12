@@ -1,92 +1,80 @@
 import { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { auth, authErrorMessage } from '../firebase.js'
-import { useAuth } from '../context/authContext.js'
-import { btnPrimary } from '../components/buttonClasses.js'
-import { headingGradient } from '../components/headingClasses.js'
+import { KidButton, KidCard } from '../components/kid.jsx'
+import { useGame } from '../context/gameContext.js'
 
 const inputClasses =
-  'rounded-[10px] border-2 border-surface-2 bg-bg px-3.5 py-2.5 text-base font-medium text-ink transition-all duration-150 shadow-[0_2px_0_0_var(--color-surface-2)] focus:border-primary focus:outline-none focus:shadow-[0_3px_0_0_var(--color-primary)]'
+  'mt-2 w-full rounded-3xl border-4 border-input bg-background px-5 py-3 text-lg outline-none focus:border-ring'
 
 export default function Signup() {
-  const { user } = useAuth()
+  const { ready, profile, signUp } = useGame()
   const navigate = useNavigate()
-  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setSubmitting(true)
-    try {
-      const { user: created } = await createUserWithEmailAndPassword(auth, email, password)
-      await updateProfile(created, { displayName: name.trim() })
-      navigate('/')
-    } catch (err) {
-      setError(authErrorMessage(err.code))
-      setSubmitting(false)
+  if (ready && profile) return <Navigate to="/map" replace />
+
+  const submit = () => {
+    const err = signUp(email, password)
+    if (err) {
+      setError(err)
+      return
     }
+    navigate('/map')
   }
 
-  if (user) return <Navigate to="/" replace />
-
   return (
-    <section className="flex animate-fade-in justify-center">
-      <div className="w-full max-w-[400px] rounded-[14px] border-2 border-surface-2 bg-surface p-6 shadow-[0_5px_0_0_var(--color-surface-2)] sm:p-8">
-        <h1 className={`mb-2 text-center text-[clamp(1.9rem,6vw,2.2rem)] font-extrabold ${headingGradient}`}>
-          Create Account
-        </h1>
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-muted">
-            Name
-            <input
-              className={inputClasses}
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder="Your name"
-            />
-          </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-muted">
+    <main className="mx-auto w-full max-w-md px-4 py-10">
+      <h1 className="text-center font-display text-4xl">Create your account ✨</h1>
+      <p className="mt-2 text-center text-lg text-muted-foreground">
+        Just an email and a password — then you can start coding.
+      </p>
+      <KidCard className="mt-6 p-6">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            submit()
+          }}
+        >
+          <label htmlFor="signup-email" className="font-display text-xl">
             Email
-            <input
-              className={inputClasses}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="you@example.com"
-            />
           </label>
-          <label className="flex flex-col gap-1.5 text-sm font-semibold text-muted">
+          <input
+            id="signup-email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            className={inputClasses}
+          />
+          <label htmlFor="signup-password" className="mt-5 block font-display text-xl">
             Password
-            <input
-              className={inputClasses}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              placeholder="Choose a password"
-            />
           </label>
-          <button type="submit" disabled={submitting} className={`${btnPrimary} w-full`}>
-            {submitting ? 'Creating account…' : 'Sign Up'}
-          </button>
+          <input
+            id="signup-password"
+            type="password"
+            autoComplete="new-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="At least 6 characters"
+            className={inputClasses}
+          />
+          {error && <p className="mt-3 text-lg text-destructive">{error}</p>}
+          <div className="mt-6 flex justify-center">
+            <KidButton tone="primary" type="submit" className="px-10 py-4 text-xl">
+              🚀 Create account
+            </KidButton>
+          </div>
         </form>
-        {error && <p className="mt-4 text-lg font-bold text-danger">{error}</p>}
-        <p className="mt-5 text-center text-muted">
-          Already have an account?{' '}
-          <Link to="/login" className="no-underline text-accent hover:underline">
-            Log in
-          </Link>
-        </p>
-      </div>
-    </section>
+      </KidCard>
+      <p className="mt-6 text-center text-lg">
+        Already have an account?{' '}
+        <Link to="/login" className="underline">
+          Log in
+        </Link>
+      </p>
+    </main>
   )
 }

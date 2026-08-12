@@ -1,106 +1,142 @@
-import { useState } from 'react'
-import { btnGhost, btnOutline, btnPrimary } from '../components/buttonClasses.js'
-import { headingGradient } from '../components/headingClasses.js'
+﻿import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import Companion from '../components/Companion.jsx'
+import { Confetti, KidButton, KidCard, KidNav } from '../components/kid.jsx'
+import { cn } from '../components/cn.js'
+import { useGame } from '../context/gameContext.js'
+
+const MAX = 6
+
+function ProgressRow({ label, value, flag }) {
+  return (
+    <div className="mt-3">
+      <p className="font-display text-xl">{label}</p>
+      <div className="mt-1 flex gap-2">
+        {Array.from({ length: MAX }, (_, i) => (
+          <div key={i} className={cn('h-8 flex-1 rounded-full', i < value ? 'bg-jungle' : 'bg-secondary/70')} />
+        ))}
+        <span className="text-2xl">{flag}</span>
+      </div>
+    </div>
+  )
+}
 
 export default function Race() {
-  const [progress, setProgress] = useState(0)
-  const [botProgress, setBotProgress] = useState(0)
-  const [status, setStatus] = useState('ready')
-  const [intervalId, setIntervalId] = useState(null)
+  const { profile, parent } = useGame()
+  const [mode, setMode] = useState('race')
+  const [running, setRunning] = useState(false)
+  const [you, setYou] = useState(0)
+  const [friend, setFriend] = useState(0)
+  const [done, setDone] = useState(false)
 
-  const startRace = () => {
-    if (intervalId) return
-    setProgress(0)
-    setBotProgress(0)
-    setStatus('running')
-    const id = setInterval(() => {
-      setBotProgress((prev) => {
-        const next = Math.min(prev + Math.random() * 4, 100)
-        if (next >= 100) {
-          clearInterval(id)
-          setStatus('bot-wins')
-        }
-        return next
-      })
-    }, 100)
-    setIntervalId(id)
+  useEffect(() => {
+    if (!running || done) return undefined
+    const id = window.setInterval(() => setFriend((f) => Math.min(MAX, f + 1)), 1400)
+    return () => window.clearInterval(id)
+  }, [running, done])
+
+useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- legacy pattern: finish race when a racer reaches the end
+    if (running && (you >= MAX || friend >= MAX)) setDone(true)
+  }, [you, friend, running])
+
+  const teamPower = Math.min(MAX, Math.round((you + friend) / 2))
+
+  const start = () => {
+    setRunning(true)
+    setDone(false)
   }
 
-  const solve = () => {
-    setProgress((prev) => {
-      const next = Math.min(prev + Math.random() * 20, 100)
-      if (next >= 100) {
-        clearInterval(intervalId)
-        setStatus('you-win')
-      }
-      return next
-    })
+  const playAgain = () => {
+    setYou(0)
+    setFriend(0)
+    setDone(false)
+    setRunning(false)
   }
 
-  const reset = () => {
-    clearInterval(intervalId)
-    setIntervalId(null)
-    setProgress(0)
-    setBotProgress(0)
-    setStatus('ready')
+  if (!parent.raceEnabled) {
+    return (
+      <main className="mx-auto w-full max-w-2xl px-4 py-10 text-center">
+        <KidNav />
+        <KidCard className="mt-6 p-8">
+          <p className="text-6xl">ðŸ”’</p>
+          <p className="mt-3 text-2xl font-bold">Races are turned off right now.</p>
+          <p className="text-lg text-muted-foreground">A grown-up can turn them back on.</p>
+        </KidCard>
+      </main>
+    )
   }
 
   return (
-    <section className="animate-fade-in">
-      <h1 className={`mb-2 text-[clamp(1.9rem,6vw,2.2rem)] font-extrabold ${headingGradient}`}>
-        Race the Bot
-      </h1>
-      <p className="mb-8 text-base text-muted sm:text-lg">
-        You vs. our AI. Click "I solved it!" as fast as you can — the bot is always coding.
-      </p>
-
-      <div className="my-8 flex flex-col gap-5">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex h-9 w-14 shrink-0 items-center justify-center rounded-[10px] border-2 border-accent-hover bg-accent text-sm font-extrabold text-white shadow-[0_3px_0_0_var(--color-accent-hover)]">
-            You
-          </span>
-          <div className="h-7 flex-1 overflow-hidden rounded-full border-2 border-accent/40 bg-bg">
-            <div
-              className="h-full rounded-full border-r-2 border-accent-hover bg-accent bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.18)_0_10px,transparent_10px_20px)] transition-[width] duration-100 ease-linear"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="inline-flex h-9 w-14 shrink-0 items-center justify-center rounded-[10px] border-2 border-danger/60 bg-danger text-sm font-extrabold text-white shadow-[0_3px_0_0_#c2245a]">
-            Bot
-          </span>
-          <div className="h-7 flex-1 overflow-hidden rounded-full border-2 border-danger/40 bg-bg">
-            <div
-              className="h-full rounded-full border-r-2 border-danger/60 bg-danger bg-[repeating-linear-gradient(45deg,rgba(255,255,255,0.18)_0_10px,transparent_10px_20px)] transition-[width] duration-100 ease-linear"
-              style={{ width: `${botProgress}%` }}
-            />
-          </div>
-        </div>
+    <main className="mx-auto w-full max-w-3xl px-4 py-8">
+      <Confetti active={done} />
+      <div className="flex items-center justify-between gap-3">
+        <KidNav />
+        <h1 className="font-display text-4xl">Play with a Friend ðŸ</h1>
       </div>
 
-      <div className="my-6 flex flex-wrap gap-3">
-        <button className={btnPrimary} onClick={startRace} disabled={status === 'running'}>
-          Start Race
-        </button>
-        <button className={btnOutline} onClick={solve} disabled={status !== 'running'}>
-          I Solved It!
-        </button>
-        <button className={btnGhost} onClick={reset}>
-          Reset
-        </button>
+      <div className="mt-6">
+        <Companion
+          lines={done ? ['Great effort! You both earned stars! â­â­'] : ['Tap the big button fast to move! Everyone gets stars.']}
+          tone={done ? 'sunny' : 'card'}
+        />
       </div>
 
-      {status === 'you-win' && (
-        <p className="inline-block rounded-[12px] border-2 border-[#3f9c3f] bg-success px-5 py-2.5 text-lg font-extrabold text-white shadow-[0_4px_0_0_#3f9c3f]">
-          You beat the bot!
-        </p>
-      )}
-      {status === 'bot-wins' && (
-        <p className="inline-block rounded-[12px] border-2 border-danger/60 bg-danger px-5 py-2.5 text-lg font-extrabold text-white shadow-[0_4px_0_0_#c2245a]">
-          The bot beat you this time.
-        </p>
-      )}
-    </section>
+      <div className="mt-6 flex gap-3">
+        {['race', 'team'].map((m) => (
+          <button
+            key={m}
+            type="button"
+            onClick={() => {
+              setMode(m)
+              playAgain()
+            }}
+            className={cn(
+              'chunky chunky-press flex-1 rounded-3xl bg-card px-5 py-4 font-display text-xl',
+              mode === m && 'bg-candy text-candy-foreground ring-4 ring-ring',
+            )}
+          >
+            {m === 'race' ? 'ðŸ Friendly Race' : 'ðŸ¤ Team Mode'}
+          </button>
+        ))}
+      </div>
+
+      <div>
+        <ProgressRow label={`${profile?.avatar ?? 'ðŸ¦Š'} ${profile?.name ?? 'You'}`} value={you} flag="ðŸŒˆ" />
+        <ProgressRow label="ðŸ¨ Friend" value={friend} flag="ðŸŒˆ" />
+        {mode === 'team' && (
+          <div className="mt-4 rounded-3xl bg-jungle/30 p-4 text-center text-xl">
+            Team power: {teamPower} / {MAX} ðŸ’ª
+          </div>
+        )}
+      </div>
+
+      <div className="mt-6 flex flex-wrap justify-center gap-3">
+        {running ? (
+          done ? (
+            <>
+              <KidButton tone="candy" onClick={playAgain}>
+                ðŸ”„ Play again
+              </KidButton>
+              <Link to="/map">
+                <KidButton tone="muted">ðŸ—ºï¸ Back to map</KidButton>
+              </Link>
+            </>
+          ) : (
+            <KidButton
+              tone="primary"
+              onClick={() => setYou((v) => Math.min(MAX, v + 1))}
+              className="px-12 py-8 text-4xl"
+            >
+              ðŸ‘Ÿ Go!
+            </KidButton>
+          )
+        ) : (
+          <KidButton tone="jungle" onClick={start}>
+            â–¶ï¸ Start
+          </KidButton>
+        )}
+      </div>
+    </main>
   )
 }

@@ -1,133 +1,136 @@
-import { Link } from 'react-router-dom'
-import { btnAccent, btnPrimary } from '../components/buttonClasses.js'
-import { card, cardHover } from '../components/cardClasses.js'
-import { headingGradient } from '../components/headingClasses.js'
+﻿import { Link } from 'react-router-dom'
+import Companion from '../components/Companion.jsx'
+import { KidCard, BookOpenIcon, SwordsIcon, BotIcon, RocketIcon, LoginIcon, CodeXmlIcon } from '../components/kid.jsx'
+import { cn, headingGradient } from '../components/cn.js'
+import { useGame } from '../context/gameContext.js'
+import { challenges, lands, stickers } from '../data/game.js'
 
 const features = [
-  {
-    title: 'Learn',
-    text: 'Step-by-step lessons with interactive examples.',
-    color: 'bg-primary',
-    shadow: 'shadow-[0_4px_0_0_var(--color-primary-hover)]',
-  },
-  {
-    title: 'Duel',
-    text: 'Face other coders head-to-head in timed battles.',
-    color: 'bg-accent',
-    shadow: 'shadow-[0_4px_0_0_var(--color-accent-hover)]',
-  },
-  {
-    title: 'Race the Bot',
-    text: 'Test your speed against our AI challenger.',
-    color: 'bg-warning',
-    shadow: 'shadow-[0_4px_0_0_#d9a600]',
-  },
-]
-
-const decoration = [
-  'left-[-14px] top-[-12px] bg-primary animate-bob',
-  'right-[-10px] top-10 bg-accent animate-bob',
-  'left-[-8px] bottom-[-14px] bg-warning animate-bob',
-]
-
-const marqueeItems = [
-  'Learn',
-  'Duel',
-  'Race the Bot',
-  'HTML',
-  'CSS',
-  'JavaScript',
-  'Python',
-  'Level Up',
-]
-
-const sparkles = [
-  { className: 'left-[8%] top-2 text-primary', delay: '0s' },
-  { className: 'right-[12%] top-6 text-accent', delay: '-0.6s' },
-  { className: 'left-[30%] bottom-2 text-warning', delay: '-1.2s' },
-  { className: 'right-[28%] bottom-4 text-accent', delay: '-1.6s' },
+  { title: 'Learn', text: 'Step-by-step lessons in HTML, CSS and Python.', to: '/map', Icon: BookOpenIcon, emoji: '📚' },
+  { title: 'Duel', text: 'Two friends code side by side in a friendly match.', to: '/race', Icon: SwordsIcon, emoji: '⚔️' },
+  { title: 'Race Bot', text: 'Race Codi Bot in a speed run of your code steps.', to: '/race-bot', Icon: BotIcon, emoji: '🤖' },
 ]
 
 export default function Home() {
+  const { profile, ready } = useGame()
+  const loggedIn = ready && profile
+
   return (
-    <section className="animate-fade-in relative">
-      {sparkles.map((sparkle, i) => (
-        <span
-          key={i}
-          aria-hidden
-          className={`animate-twinkle pointer-events-none absolute ${sparkle.className}`}
-          style={{ animationDelay: sparkle.delay }}
-        >
-          <svg
-            className="size-5"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            stroke="currentColor"
-            strokeWidth="1"
-          >
-            <path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z" />
-          </svg>
+    <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10">
+<section className="relative animate-fade-in text-center">
+        <span aria-hidden className="absolute left-2 top-2 animate-float text-4xl sm:left-10 sm:top-6">
+          👾
         </span>
-      ))}
+        <span aria-hidden className="absolute right-2 top-4 animate-bob text-4xl sm:right-12 sm:top-8">
+          🎨
+        </span>
+        <span aria-hidden className="absolute bottom-8 left-8 hidden animate-bob text-3xl sm:block sm:left-24">
+          🎧
+        </span>
+        <span aria-hidden className="absolute bottom-10 right-6 hidden animate-float text-3xl sm:block sm:right-20">
+          🚀
+        </span>
+        <h1 className="font-display text-5xl font-extrabold leading-tight sm:text-6xl">
+          Learn to code by <span className={headingGradient}>playing</span> 🎮
+        </h1>
+        <p className="mx-auto mt-4 max-w-2xl text-xl text-muted-foreground">
+          Codivo turns coding into a game for kids ages 6–12. Build with HTML, style with CSS,
+          think with Python — and collect trophies along the way.
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          {loggedIn ? (
+            <Link
+              to="/map"
+              className="chunky chunky-press inline-flex items-center gap-2 rounded-3xl bg-jungle px-6 py-4 font-display text-xl font-extrabold text-jungle-foreground no-underline sm:text-2xl"
+            >
+              <CodeXmlIcon className="size-6" aria-hidden />
+              Keep learning
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="/signup"
+                className="chunky chunky-press inline-flex items-center gap-2 rounded-3xl bg-primary px-6 py-4 font-display text-xl font-extrabold text-primary-foreground no-underline sm:text-2xl"
+              >
+                <RocketIcon className="size-6" aria-hidden />
+                Start free
+              </Link>
+              <Link
+                to="/login"
+                className="chunky chunky-press inline-flex items-center gap-2 rounded-3xl bg-card px-6 py-4 font-display text-xl font-extrabold text-card-foreground no-underline sm:text-2xl"
+              >
+                <LoginIcon className="size-6" aria-hidden />
+                Log in
+              </Link>
+            </>
+          )}
+        </div>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <span className="pillow rounded-full bg-card px-5 py-2 font-display text-lg">
+            🌍 {lands.length} worlds
+          </span>
+          <span className="pillow rounded-full bg-card px-5 py-2 font-display text-lg">
+            🎮 {challenges.length} games
+          </span>
+          <span className="pillow rounded-full bg-card px-5 py-2 font-display text-lg">
+            ⭐ {stickers.length} stickers
+          </span>
+        </div>
+      </section>
 
-      <h1
-        className={`animate-bounce-in mb-2 text-[clamp(2rem,7vw,2.8rem)] font-extrabold ${headingGradient}`}
-      >
-        Welcome to Cod Ivo
-      </h1>
-      <p className="animate-pop-in mb-8 text-base text-muted sm:text-lg" style={{ animationDelay: '150ms' }}>
-        Learn to code, duel your friends, and race our bot in live coding challenges.
-      </p>
-      <div className="my-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <Link to="/learn" className={`${btnPrimary} animate-pop-in text-center`} style={{ animationDelay: '250ms' }}>
-          Start Learning
-        </Link>
-        <Link to="/duel" className={`${btnAccent} animate-pop-in text-center`} style={{ animationDelay: '350ms' }}>
-          Duel Now
-        </Link>
-      </div>
+      {loggedIn && (
+        <div className="flex justify-center">
+          <Companion lines={[`Welcome back, ${profile.name}! Ready for the next puzzle?`]} tone="sunny" />
+        </div>
+      )}
 
-      <div className="my-10 overflow-hidden rounded-[14px] border-2 border-surface-2 bg-surface py-3 shadow-[0_4px_0_0_var(--color-surface-2)]">
-        <div className="animate-marquee flex w-max items-center gap-10 whitespace-nowrap">
-          {[0, 1].map((copy) => (
-            <div key={copy} className="flex items-center gap-10">
-              {marqueeItems.map((item, i) => (
-                <span key={item} className="flex items-center gap-10">
-                  <span className="text-base font-extrabold uppercase tracking-widest text-muted">
-                    {item}
+<section className="grid gap-4 pt-2 sm:grid-cols-3">
+        {features.map((feature, index) => {
+          const Icon = feature.Icon
+          return (
+            <Link to={feature.to} key={feature.title} className="no-underline">
+              <KidCard
+                className="h-full animate-fade-in p-6 hover:border-primary"
+                style={{ animationDelay: `${index * 120}ms` }}
+              >
+                <span className="flex items-start justify-between">
+                  <Icon className="size-10 text-primary" aria-hidden />
+                  <span aria-hidden className="animate-bounce-soft text-3xl">
+                    {feature.emoji}
                   </span>
-                  <span
-                    className={`size-2.5 rounded-[4px] ${['bg-primary', 'bg-accent', 'bg-warning'][i % 3]}`}
-                  />
                 </span>
-              ))}
+                <h2 className="mt-3 font-display text-2xl">{feature.title}</h2>
+                <p className="mt-1 text-lg text-muted-foreground">{feature.text}</p>
+              </KidCard>
+            </Link>
+          )
+        })}
+      </section>
+
+      <section>
+        <h2 className="font-display text-3xl font-extrabold">
+          Coding worlds to explore 🌍
+        </h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          {lands.map((land, index) => (
+            <div
+              key={land.id}
+              className={cn('pillow animate-fade-in rounded-4xl p-6', land.themeClass)}
+              style={{ animationDelay: `${index * 150}ms` }}
+            >
+              <p className="animate-float text-5xl">{land.emoji}</p>
+              <p className="mt-3 font-display text-2xl">{land.name}</p>
+              <p className="mt-1 text-lg opacity-90">{land.blurb}</p>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
-        {features.map((feature, i) => (
-          <div
-            key={feature.title}
-            className={`animate-pop-in ${card} ${cardHover} relative overflow-hidden p-0`}
-            style={{ animationDelay: `${(i + 1) * 250}ms` }}
-          >
-            <span
-              className={`absolute ${decoration[i]} size-4 rounded-[4px] border-2 border-black/15`}
-            />
-            <span
-              className={`mb-1 block h-3 border-b-2 border-black/15 ${feature.color} ${feature.shadow}`}
-            />
-            <div className="p-5">
-              <h3 className="mb-1.5 text-lg font-extrabold text-accent transition-colors duration-300 hover:text-primary">
-                {feature.title}
-              </h3>
-              <p className="m-0 text-muted">{feature.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+      <p className="pb-6 pt-4 text-center">
+        <Link to="/parents" className="text-lg underline">
+          Grown-ups: open the Parent Dashboard 🧑‍💼
+        </Link>
+      </p>
+    </main>
   )
 }
