@@ -105,7 +105,7 @@ return (
               <KidButton tone="candy" onClick={playAgain}>
                 ðŸ”„ Play again
               </KidButton>
-              <Link to="/map">
+              <Link to="/learn">
                 <KidButton tone="muted">ðŸ—ºï¸ Back to map</KidButton>
               </Link>
             </>

@@ -65,7 +65,7 @@ export function InitialBadge({ name = 'Friend', className }) {
   )
 }
 
-export function KidNav({ to = '/map', label = 'Map' }) {
+export function KidNav({ to = '/learn', label = 'Learn' }) {
   return (
     <Link
       to={to}

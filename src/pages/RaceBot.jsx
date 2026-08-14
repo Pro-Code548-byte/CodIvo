@@ -100,7 +100,7 @@ className={cn(
               <KidButton tone="candy" onClick={reset}>
                 ðŸ”„ Race again
               </KidButton>
-              <Link to="/map">
+              <Link to="/learn">
                 <KidButton tone="muted">ðŸ—ºï¸ Back to learning</KidButton>
               </Link>
             </>

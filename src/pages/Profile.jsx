@@ -15,7 +15,7 @@ export default function Profile() {
 
   const goBack = () => {
     if (window.history.state?.idx > 0) navigate(-1)
-    else navigate('/map')
+    else navigate('/learn')
   }
 
   const save = () => {

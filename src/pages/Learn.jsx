@@ -67,6 +67,20 @@ export default function Learn() {
             </li>
           ))}
         </ol>
+        <h3 className="mt-10 font-display text-3xl">🧪 Projects — try it yourself!</h3>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          {active.projects.map((project, index) => (
+            <article
+              key={project.id}
+              className="pillow animate-fade-in rounded-4xl border-4 border-dashed border-card bg-card/60 p-5"
+              style={{ animationDelay: `${index * 70}ms` }}
+            >
+              <span className="block text-4xl">{project.emoji}</span>
+              <span className="mt-2 block font-display text-xl">{project.title}</span>
+              <span className="mt-1 block text-lg text-muted-foreground">{project.text}</span>
+            </article>
+          ))}
+        </div>
         <p className="mt-8 text-center text-lg">
           Ready to play? <Link to="/map" className="underline">Go to the map 🗺️</Link>
         </p>

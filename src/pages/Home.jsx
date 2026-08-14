@@ -1,9 +1,8 @@
 ﻿import { Link } from 'react-router-dom'
 import Companion from '../components/Companion.jsx'
 import { KidCard, BookOpenIcon, SwordsIcon, BotIcon, RocketIcon, LoginIcon, CodeXmlIcon } from '../components/kid.jsx'
-import { cn, headingGradient } from '../components/cn.js'
+import { headingGradient } from '../components/cn.js'
 import { useGame } from '../context/gameContext.js'
-import { challenges, lands, stickers } from '../data/game.js'
 
 const features = [
   { title: 'Learn', text: 'Step-by-step lessons in HTML, CSS and Python.', to: '/learn', Icon: BookOpenIcon, emoji: '📚' },
@@ -28,7 +27,7 @@ export default function Home() {
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           {loggedIn ? (
             <Link
-              to="/map"
+              to="/learn"
               className="chunky chunky-press inline-flex items-center gap-2 rounded-3xl bg-jungle px-6 py-4 font-display text-xl font-extrabold text-jungle-foreground no-underline sm:text-2xl"
             >
               <CodeXmlIcon className="size-6" aria-hidden />
@@ -52,18 +51,7 @@ export default function Home() {
               </Link>
             </>
           )}
-        </div>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <span className="pillow rounded-full bg-card px-5 py-2 font-display text-lg">
-            🌍 {lands.length} worlds
-          </span>
-          <span className="pillow rounded-full bg-card px-5 py-2 font-display text-lg">
-            🎮 {challenges.length} games
-          </span>
-          <span className="pillow rounded-full bg-card px-5 py-2 font-display text-lg">
-            ⭐ {stickers.length} stickers
-          </span>
-        </div>
+</div>
       </section>
 
       {loggedIn && (
@@ -92,26 +80,7 @@ export default function Home() {
               </KidCard>
             </Link>
           )
-        })}
-      </section>
-
-      <section>
-        <h2 className="font-display text-3xl font-extrabold">
-          Coding worlds to explore 🌍
-        </h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
-          {lands.map((land, index) => (
-            <div
-              key={land.id}
-              className={cn('pillow animate-fade-in rounded-4xl p-6', land.themeClass)}
-              style={{ animationDelay: `${index * 150}ms` }}
-            >
-              <p className="animate-float text-5xl">{land.emoji}</p>
-              <p className="mt-3 font-display text-2xl">{land.name}</p>
-              <p className="mt-1 text-lg opacity-90">{land.blurb}</p>
-            </div>
-          ))}
-        </div>
+})}
 </section>
     </main>
   )

@@ -417,7 +417,7 @@ export default function Challenge() {
   const sticker = challenge ? getSticker(challenge.stickerId) : null
   const [collectedSticker, setCollectedSticker] = useState(false)
 
-  if (!challenge || !land) return <Navigate to="/map" replace />
+  if (!challenge || !land) return <Navigate to="/learn" replace />
 
   const run = () => {
     const result = checkResult(challenge, program)
