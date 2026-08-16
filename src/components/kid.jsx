@@ -220,6 +220,16 @@ export function TrophyIcon(props) {
   )
 }
 
+export function FlaskIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M10 2v6.29a1 1 0 0 1-.14.51L3.86 18.8A2 2 0 0 0 5.62 22h12.76a2 2 0 0 0 1.76-3.2L14.14 8.8a1 1 0 0 1-.14-.51V2" />
+      <path d="M8 2h8" />
+      <path d="M7.5 15h9" />
+    </Icon>
+  )
+}
+
 export function LogOutIcon(props) {
   return (
     <Icon {...props}>

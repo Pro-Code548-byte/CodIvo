@@ -1,14 +1,14 @@
 ﻿import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useGame } from '../context/gameContext.js'
-import { InitialBadge, HomeIcon, BookOpenIcon, SwordsIcon, BotIcon } from './kid.jsx'
+import { InitialBadge, HomeIcon, BookOpenIcon, SwordsIcon, FlaskIcon } from './kid.jsx'
 import { cn } from './cn.js'
 
 const navItems = [
   { to: '/', label: 'Home', Icon: HomeIcon, exact: true },
   { to: '/learn', label: 'Learn', Icon: BookOpenIcon, exact: false },
   { to: '/race', label: 'Duel', Icon: SwordsIcon, exact: false },
-  { to: '/race-bot', label: 'Race Bot', Icon: BotIcon, exact: false },
+  { to: '/sandbox', label: 'Sandbox', Icon: FlaskIcon, exact: false },
 ]
 
 const pillBase =

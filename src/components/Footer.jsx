@@ -4,7 +4,7 @@ const links = [
   { to: '/', label: 'Home 🏠' },
   { to: '/learn', label: 'Learn 🚀' },
   { to: '/race', label: 'Duel ⚔️' },
-  { to: '/race-bot', label: 'Race Bot 🤖' },
+  { to: '/sandbox', label: 'Sandbox 🧪' },
   { to: '/trophies', label: 'Trophies 🏆' },
 ]
 

@@ -5,11 +5,14 @@ import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Home from './pages/Home.jsx'
 import Learn from './pages/Learn.jsx'
+import Subject from './pages/Subject.jsx'
+import Topic from './pages/Topic.jsx'
+import Lesson from './pages/Lesson.jsx'
 
 import Land from './pages/Land.jsx'
 import Challenge from './pages/Challenge.jsx'
 import Race from './pages/Race.jsx'
-import RaceBot from './pages/RaceBot.jsx'
+import Sandbox from './pages/Sandbox.jsx'
 import Trophies from './pages/Trophies.jsx'
 import Profile from './pages/Profile.jsx'
 import Login from './pages/Login.jsx'
@@ -29,11 +32,14 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/learn" element={<RequireAuth><Learn /></RequireAuth>} />
+          <Route path="/subject/:subjectId" element={<RequireAuth><Subject /></RequireAuth>} />
+          <Route path="/topic/:subjectId/:topicId" element={<RequireAuth><Topic /></RequireAuth>} />
+          <Route path="/lesson/:lessonId" element={<RequireAuth><Lesson /></RequireAuth>} />
           
           <Route path="/land/:landId" element={<RequireAuth><Land /></RequireAuth>} />
           <Route path="/challenge/:challengeId" element={<RequireAuth><Challenge /></RequireAuth>} />
           <Route path="/race" element={<RequireAuth><Race /></RequireAuth>} />
-          <Route path="/race-bot" element={<RequireAuth><RaceBot /></RequireAuth>} />
+          <Route path="/sandbox" element={<RequireAuth><Sandbox /></RequireAuth>} />
           <Route path="/trophies" element={<RequireAuth><Trophies /></RequireAuth>} />
           <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
           <Route path="/login" element={<Login />} />

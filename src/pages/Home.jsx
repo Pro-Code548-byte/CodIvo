@@ -1,13 +1,13 @@
 ﻿import { Link } from 'react-router-dom'
 import Companion from '../components/Companion.jsx'
-import { KidCard, BookOpenIcon, SwordsIcon, BotIcon, RocketIcon, LoginIcon, CodeXmlIcon } from '../components/kid.jsx'
+import { KidCard, BookOpenIcon, SwordsIcon, FlaskIcon, RocketIcon, LoginIcon, CodeXmlIcon } from '../components/kid.jsx'
 import { headingGradient } from '../components/cn.js'
 import { useGame } from '../context/gameContext.js'
 
 const features = [
-  { title: 'Learn', text: 'Step-by-step lessons in HTML, CSS and Python.', to: '/learn', Icon: BookOpenIcon, emoji: '📚' },
-  { title: 'Duel', text: 'Two friends code side by side in a friendly match.', to: '/race', Icon: SwordsIcon, emoji: '⚔️' },
-  { title: 'Race Bot', text: 'Race Codi Bot in a speed run of your code steps.', to: '/race-bot', Icon: BotIcon, emoji: '🤖' },
+  { title: 'Learn', text: 'Step-by-step lessons in HTML and CSS.', to: '/learn', Icon: BookOpenIcon, emoji: '📚' },
+  { title: 'Duel', text: 'Make a room, share a secret code — build a page together with a friend!', to: '/race', Icon: SwordsIcon, emoji: '⚔️' },
+  { title: 'Sandbox', text: 'Anything goes! Build whatever you dream up and save it.', to: '/sandbox', Icon: FlaskIcon, emoji: '🧪' },
 ]
 
 export default function Home() {
@@ -21,8 +21,8 @@ export default function Home() {
           Learn coding <span className={headingGradient}>the fun way</span> 🎮
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-          Codivo turns coding into a game for kids ages 6–12. Build with HTML, style with CSS,
-          think with Python — and collect trophies along the way.
+          Codivo turns coding into a game for kids ages 6–12. Build with HTML, style with CSS —
+          and collect trophies along the way.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           {loggedIn ? (
