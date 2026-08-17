@@ -11,24 +11,25 @@ export default function Signup() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
   const [error, setError] = useState('')
 
-  if (ready && profile) return <Navigate to="/map" replace />
+  if (ready && profile) return <Navigate to="/learn" replace />
 
-  const submit = () => {
-    const err = signUp(email, password)
+  const submit = async () => {
+    const err = await signUp(email, password, name)
     if (err) {
       setError(err)
       return
     }
-    navigate('/map')
+    navigate('/learn')
   }
 
   return (
     <main className="mx-auto w-full max-w-md px-4 py-10">
       <h1 className="text-center font-display text-4xl">Create your account ✨</h1>
       <p className="mt-2 text-center text-lg text-muted-foreground">
-        Just an email and a password — then you can start coding.
+        A name, an email and a password — then you can start coding.
       </p>
       <KidCard className="mt-6 p-6">
         <form
@@ -37,7 +38,19 @@ export default function Signup() {
             submit()
           }}
         >
-          <label htmlFor="signup-email" className="font-display text-xl">
+          <label htmlFor="signup-name" className="font-display text-xl">
+            Your name
+          </label>
+          <input
+            id="signup-name"
+            type="text"
+            autoComplete="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Mia"
+            className={inputClasses}
+          />
+          <label htmlFor="signup-email" className="mt-5 block font-display text-xl">
             Email
           </label>
           <input

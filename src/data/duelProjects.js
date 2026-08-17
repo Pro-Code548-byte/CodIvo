@@ -9,6 +9,33 @@ export const SWATCHES = [
   { id: 'cream', name: 'Cream', css: '#fff3d6', fg: '#422006' },
 ]
 
+const PARTS = {
+  header: {
+    id: 'header',
+    name: 'Header',
+    emoji: '🎪',
+    about: 'The welcome sign at the very top of the page. It tells visitors the name of the site and says hello!',
+  },
+  nav: {
+    id: 'nav',
+    name: 'Nav',
+    emoji: '🧭',
+    about: 'The menu bar. It holds the links (href) that jump to other pages — the road map of the site!',
+  },
+  main: {
+    id: 'main',
+    name: 'Main',
+    emoji: '📚',
+    about: 'The biggest part of the page — the story, the pictures and everything fun lives here.',
+  },
+  footer: {
+    id: 'footer',
+    name: 'Footer',
+    emoji: '🦶',
+    about: 'The goodbye strip at the bottom. It says who made the page and how to say hi!',
+  },
+}
+
 export const duelProjects = {
   html: [
     {
@@ -17,10 +44,10 @@ export const duelProjects = {
       emoji: '🦕',
       text: 'A homepage for the coolest zoo in town!',
       parts: [
-        { id: 'header', name: 'Header', emoji: '🎪', hint: 'The welcome sign — a big title and a hello message.', tags: ['h1', 'textarea'] },
-        { id: 'nav', name: 'Nav', emoji: '🧭', hint: 'The menu — links to visit.', tags: ['a'] },
-        { id: 'main', name: 'Main', emoji: '📚', hint: 'The star — a heading, a story and a picture!', tags: ['h2', 'p', 'img'] },
-        { id: 'footer', name: 'Footer', emoji: '🦶', hint: 'Who made this zoo? A little message.', tags: ['p'] },
+        { ...PARTS.header, hint: 'A big title and a hello message.', tags: ['h1', 'textarea'] },
+        { ...PARTS.nav, hint: 'Links to visit.', tags: ['a'] },
+        { ...PARTS.main, hint: 'A heading, a story and a picture!', tags: ['h2', 'p', 'img'] },
+        { ...PARTS.footer, hint: 'Who made this zoo? A little message.', tags: ['p'] },
       ],
     },
     {
@@ -29,10 +56,10 @@ export const duelProjects = {
       emoji: '🚀',
       text: 'A fan club for future astronauts!',
       parts: [
-        { id: 'header', name: 'Header', emoji: '🛸', hint: 'A big welcome to the club.', tags: ['h1', 'textarea'] },
-        { id: 'nav', name: 'Nav', emoji: '🧭', hint: 'Menu of space links.', tags: ['a'] },
-        { id: 'main', name: 'Main', emoji: '🌌', hint: 'News about rockets and stars!', tags: ['h2', 'p', 'img'] },
-        { id: 'footer', name: 'Footer', emoji: '👨‍🚀', hint: 'Sign off with a message.', tags: ['p'] },
+        { ...PARTS.header, hint: 'A big welcome to the club.', tags: ['h1', 'textarea'] },
+        { ...PARTS.nav, hint: 'Menu of space links.', tags: ['a'] },
+        { ...PARTS.main, hint: 'News about rockets and stars!', tags: ['h2', 'p', 'img'] },
+        { ...PARTS.footer, hint: 'Sign off with a message.', tags: ['p'] },
       ],
     },
   ],
@@ -43,10 +70,10 @@ export const duelProjects = {
       emoji: '🍭',
       text: 'Paint the sweetest shop on the web!',
       parts: [
-        { id: 'header', name: 'Header', emoji: '🍬', hint: 'Paint the welcome banner.' },
-        { id: 'nav', name: 'Nav', emoji: '🧭', hint: 'Paint the menu bar.' },
-        { id: 'main', name: 'Main', emoji: '🍫', hint: 'Paint the big content area.' },
-        { id: 'footer', name: 'Footer', emoji: '🎀', hint: 'Paint the goodbye strip.' },
+        { ...PARTS.header, hint: 'A candy title and a hello — painted pink!', tags: ['h1', 'p', 'img'] },
+        { ...PARTS.nav, hint: 'Links to candy sections, painted sunny.', tags: ['a'] },
+        { ...PARTS.main, hint: 'A heading, a story and a picture — paint it all!', tags: ['h2', 'p', 'img', 'ul', 'li'] },
+        { ...PARTS.footer, hint: 'A sweet goodbye, painted candy.', tags: ['p'] },
       ],
     },
     {
@@ -55,22 +82,15 @@ export const duelProjects = {
       emoji: '🐠',
       text: 'Style an underwater world!',
       parts: [
-        { id: 'header', name: 'Header', emoji: '🌊', hint: 'Paint the splashy banner.' },
-        { id: 'nav', name: 'Nav', emoji: '🧭', hint: 'Paint the diving menu.' },
-        { id: 'main', name: 'Main', emoji: '🐙', hint: 'Paint the coral content area.' },
-        { id: 'footer', name: 'Footer', emoji: '🦀', hint: 'Paint the sandy strip.' },
+        { ...PARTS.header, hint: 'A splashy title — painted ocean blue!', tags: ['h1', 'p'] },
+        { ...PARTS.nav, hint: 'Diving menu links, painted spacey.', tags: ['a'] },
+        { ...PARTS.main, hint: 'Coral content: heading, story and fish picture!', tags: ['h2', 'p', 'img', 'ul', 'li'] },
+        { ...PARTS.footer, hint: 'A sandy goodbye strip, painted sunny.', tags: ['p'] },
       ],
     },
   ],
 }
 
-export function cssPartHtml(part, build) {
-  const sw = SWATCHES.find((s) => s.id === build?.color) ?? SWATCHES[0]
-  const text = build?.text?.trim() || `${part.name} by your team!`
-  return `<section style="background:${sw.css};color:${sw.fg};border-radius:16px;padding:16px 20px;margin:10px 0;font-family:system-ui,sans-serif"><h2 style="margin:0 0 6px;font-size:22px">${part.emoji} ${part.name}</h2><p style="margin:0">${text.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</p></section>`
-}
-
-export function mergeDoc(project, subject, partHtmls) {
-  const head = subject === 'css' ? '<meta charset="utf-8">' : ''
-  return `<!DOCTYPE html><html><head><title>${project.title}</title>${head}</head><body>${partHtmls.join('\n')}</body></html>`
+export function mergeDoc(project, partHtmls) {
+  return `<!DOCTYPE html><html><head><title>${project.title}</title><meta charset="utf-8"></head><body>${partHtmls.join('\n')}</body></html>`
 }

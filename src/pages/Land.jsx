@@ -11,7 +11,7 @@ export default function Land() {
   const { profile, ready } = useGame()
   const completed = ready ? profile?.completedChallengeIds ?? [] : []
 
-  if (!land) return <Navigate to="/map" replace />
+  if (!land) return <Navigate to="/learn" replace />
 
   const list = getChallengesInLand(land.id)
   const landDone = list.every((c) => completed.includes(c.id))

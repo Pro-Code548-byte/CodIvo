@@ -137,11 +137,11 @@ function BlockNode({ node, onUpdate, onRemove, hover, onEnter, onLeave, onDrop }
           )
           e.dataTransfer.effectAllowed = 'move'
         }}
-        className="flex cursor-grab items-center gap-2 px-3 py-2 active:cursor-grabbing"
+        className="flex min-w-0 cursor-grab flex-wrap items-center gap-2 px-3 py-2 active:cursor-grabbing"
       >
         <span aria-hidden className="text-base opacity-60">⠿</span>
         <span aria-hidden className="text-xl">{def.emoji}</span>
-        <span className="uppercase tracking-wide">{def.name}</span>
+        <span className="truncate uppercase tracking-wide">{def.name}</span>
         <code className="rounded-lg bg-card/50 px-2 py-0.5 font-mono text-xs font-bold">
           {def.acceptsText ? `<${tag}> … </${tag}>` : def.syntax}
         </code>

@@ -13,15 +13,15 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  if (ready && profile) return <Navigate to="/map" replace />
+  if (ready && profile) return <Navigate to="/learn" replace />
 
-  const submit = () => {
-    const err = signIn(email, password)
+  const submit = async () => {
+    const err = await signIn(email, password)
     if (err) {
       setError(err)
       return
     }
-    navigate('/map')
+    navigate('/learn')
   }
 
   return (

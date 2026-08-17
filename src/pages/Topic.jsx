@@ -69,17 +69,33 @@ export default function Topic() {
 
   const tags = topic.tags ?? []
   const steps = topic.steps ?? buildSteps(tags)
+  const missionTags = [...new Set(steps.map((s) => s.block).filter(Boolean))]
 
   const tagSet = new Set(workspace.map((b) => b.tag))
   const anyText = Object.values(texts).some((v) => v.trim().length > 0)
   const isStepDone = (s) => {
     if (s.needsText) return anyText
+    if (s.requiredText) {
+      return Object.values(texts).some((v) =>
+        v.trim().toLowerCase().includes(s.requiredText.toLowerCase()),
+      )
+    }
+    if (s.attr && s.value) {
+      return workspace.some((b) => {
+        if (b.tag !== s.block) return false
+        const v = attrs[b.id]?.[s.attr] ?? ''
+        return v.trim().toLowerCase().includes(s.value.toLowerCase())
+      })
+    }
+    if (s.attrNotEmpty) {
+      return workspace.some(
+        (b) => b.tag === s.block && (attrs[b.id]?.[s.attrNotEmpty] ?? '').trim().length > 0,
+      )
+    }
     const def = getBlockDef(s.block)
     const wantClose = s.part === 'close'
     if (def?.voidElement) return tagSet.has(s.block)
-    return (
-      workspace.some((b) => b.tag === s.block && b.isClose === wantClose)
-    )
+    return workspace.some((b) => b.tag === s.block && b.isClose === wantClose)
   }
 
   const stepIndex = steps.findIndex((s) => !isStepDone(s))
@@ -396,9 +412,9 @@ export default function Topic() {
                       </div>
                     </div>
                     <div className="rounded-3xl border-4 border-card bg-card p-3">
-                      <p className="font-display text-sm font-extrabold">🧱 Tag guide</p>
+                      <p className="font-display text-sm font-extrabold">🛠️ Tags for this mission</p>
                       <div className="mt-1 flex flex-col gap-2.5">
-                        {tags.map((tag) => {
+                        {missionTags.map((tag) => {
                           const def = getBlockDef(tag)
                           if (!def) return null
                           return (
@@ -432,33 +448,42 @@ export default function Topic() {
                     </div>
                     <div className="rounded-3xl border-4 border-sunny bg-sunny/40 p-3">
                       <p className="font-display text-sm font-extrabold">🎯 Your mission</p>
-                      {steps.length > 0 ? (
-                        <ul className="mt-1 flex list-none flex-col gap-1.5 p-0">
-                          {steps.map((s, i) => {
-                            const done = isStepDone(s)
-                            const current = i === stepIndex && !allDone
-                            return (
-                              <li
-                                key={i}
-                                className={cn(
-                                  'flex items-start gap-1.5 text-sm leading-snug',
-                                  done
-                                    ? 'text-muted-foreground line-through opacity-70'
-                                    : current
-                                      ? 'font-extrabold text-foreground'
-                                      : 'text-muted-foreground',
-                                )}
-                              >
-                                <span aria-hidden>{done ? '✅' : current ? '⏳' : '⬜'}</span>
-                                <span>{s.text}</span>
-                              </li>
-                            )
-                          })}
-                        </ul>
-                      ) : (
-                        <p className="mt-1 text-sm leading-snug text-muted-foreground">
-                          {topic.activity}
-                        </p>
+                      <p className="mt-1 font-display text-lg font-extrabold leading-snug text-foreground">
+                        {topic.mission}
+                      </p>
+                      {steps.length > 0 && (
+                        <>
+                          <p className="mt-2 text-xs font-extrabold text-muted-foreground">
+                            Build it step by step:
+                          </p>
+                          <ul className="mt-1 flex list-none flex-col gap-1.5 p-0">
+                            {steps.map((s, i) => {
+                              const done = isStepDone(s)
+                              const current = i === stepIndex && !allDone
+                              return (
+                                <li
+                                  key={i}
+                                  className={cn(
+                                    'flex items-start gap-1.5 text-sm leading-snug',
+                                    done
+                                      ? 'text-muted-foreground line-through opacity-70'
+                                      : current
+                                        ? 'font-extrabold text-foreground'
+                                        : 'text-muted-foreground',
+                                  )}
+                                >
+                                  <span aria-hidden>{done ? '✅' : current ? '⏳' : '⬜'}</span>
+                                  <span className="flex flex-col gap-0.5">
+                                    <span>{s.text}</span>
+                                    {done && s.praise && (
+                                      <span className="text-xs font-extrabold text-jungle">{s.praise}</span>
+                                    )}
+                                  </span>
+                                </li>
+                              )
+                            })}
+                          </ul>
+                        </>
                       )}
                     </div>
                     <div className="rounded-3xl border-4 border-card bg-card p-3">

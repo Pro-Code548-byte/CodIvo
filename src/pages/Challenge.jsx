@@ -480,8 +480,8 @@ export default function Challenge() {
               âž¡ï¸ Next game
             </KidButton>
           )}
-          <Link to="/map">
-            <KidButton tone="muted">ðŸ—ºï¸ Back to map</KidButton>
+          <Link to="/learn">
+            <KidButton tone="muted">🗺️ Back to map</KidButton>
           </Link>
           <Link to="/trophies">
             <KidButton tone="sunny">ðŸ† My stickers</KidButton>

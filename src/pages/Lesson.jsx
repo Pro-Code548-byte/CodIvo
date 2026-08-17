@@ -144,7 +144,7 @@ function LessonBody({ lesson }) {
             <h2 className="mt-5 font-display text-2xl sm:text-3xl">
               {lesson.emoji} {lesson.title}
             </h2>
-            <ol className="mt-4 flex max-h-[520px] list-none flex-col gap-3 overflow-y-auto p-0 pr-1">
+            <ol className="mt-4 flex max-h-[520px] list-none flex-col gap-3 overflow-y-auto p-0 pr-1 sm:max-h-[620px]">
               {lesson.steps.map((step, i) => {
                 const done = i < stepIndex || allDone
                 const active = i === stepIndex
@@ -160,7 +160,7 @@ function LessonBody({ lesson }) {
                           : 'border-muted bg-secondary/30 opacity-60',
                     )}
                   >
-                    <div className="flex items-center gap-3">
+<div className="flex flex-wrap items-center gap-3">
                       <span
                         className={cn(
                           'grid size-9 shrink-0 place-items-center rounded-full font-display text-lg font-extrabold',

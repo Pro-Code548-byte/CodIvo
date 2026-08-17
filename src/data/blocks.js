@@ -16,6 +16,18 @@ export const categoryLabels = {
   form: 'Forms 📨',
 }
 
+export const ATTR_HELP = {
+  class: 'A nickname for the element. CSS can style every element that shares the same class — like a team name!',
+  id: 'A one-of-a-kind name. Only ONE element on the whole page may have this id — like a name tag that fits only you.',
+  href: 'The address the link jumps to. Type a website like https://example.com or #top to jump inside the page.',
+  src: 'The address of the picture — a photo link or a file name. The image loads from here.',
+  alt: 'The words shown if the picture cannot load, or read out loud for friends who use screen readers.',
+  type: 'What kind of input this is — text, password, email, number and more.',
+  placeholder: 'Light grey hint words inside the box, shown before anyone types anything.',
+  value: 'The answer already waiting inside this option.',
+  style: 'Inline CSS! Type tiny styles right here, like color: red or background: yellow. The style applies to this element at once — no style sheet needed.',
+}
+
 const BROAD = [
   'h1', 'h2', 'h3', 'p', 'strong', 'em', 'a', 'img', 'button',
   'div', 'section', 'article', 'header', 'nav', 'main', 'footer',
@@ -507,7 +519,7 @@ const EXTRA_ATTRS = {
 }
 
 for (const def of Object.values(blockRegistry)) {
-  def.attrs = [...(EXTRA_ATTRS[def.id] ?? []), 'class', 'id']
+  def.attrs = [...(EXTRA_ATTRS[def.id] ?? []), 'class', 'id', 'style']
 }
 
 export function isVoid(id) {
