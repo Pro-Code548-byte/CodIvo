@@ -45,6 +45,20 @@ function buildSteps(tags) {
   return steps
 }
 
+const SKELETON_STEPS = [
+  { text: 'Add the <!DOCTYPE html> block — every page starts with it!', block: 'doctype', praise: 'The magic starter line! ✨' },
+  { text: 'Add the <html> open tag.', block: 'html', part: 'open', praise: 'The root of the whole page! 🌐' },
+  { text: 'Add the <head> open tag.', block: 'head', part: 'open', praise: 'Secret page info lives here! 🧠' },
+  { text: 'Add the <body> open tag.', block: 'body', part: 'open', praise: 'Everything you see goes here! 🦴' },
+]
+
+function withSkeleton(steps) {
+  const missing = SKELETON_STEPS.filter(
+    (s) => !steps.some((b) => b.block === s.block && (b.part ?? 'open') === (s.part ?? 'open')),
+  )
+  return [...missing, ...steps]
+}
+
 export default function Topic() {
   const { subjectId, topicId } = useParams()
   const [workspace, setWorkspace] = useState([])
@@ -68,7 +82,7 @@ export default function Topic() {
   if (!subject || !topic) return <Navigate to="/learn" replace />
 
   const tags = topic.tags ?? []
-  const steps = topic.steps ?? buildSteps(tags)
+  const steps = withSkeleton(topic.steps ?? buildSteps(tags))
   const missionTags = [...new Set(steps.map((s) => s.block).filter(Boolean))]
 
   const tagSet = new Set(workspace.map((b) => b.tag))
